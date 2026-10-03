@@ -3,25 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BB84 Simulator</title>
+
+    <title>Secure Pharmaceutical Data Transmission</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f9;
+            color: #17212b;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #12343b;
+            color: white;
+            padding: 24px 40px;
+            border-bottom: 4px solid #2b6777;
+        }
+
+        .company-name {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        header p {
+            margin-top: 8px;
+            color: #d5e5e8;
+            font-size: 14px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .status-bar {
+            background: white;
+            border: 1px solid #dce3e7;
+            border-radius: 8px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .status-title {
+            font-size: 13px;
+            color: #687780;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status {
+            font-weight: 600;
+            color: #237a57;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #dce3e7;
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .panel h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .panel-description {
+            color: #687780;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .data-section {
+            margin-bottom: 22px;
+        }
+
+        .data-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .data-section h3 {
+            font-size: 13px;
+            color: #53636b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        .data-box {
+            background: #f5f8fa;
+            border: 1px solid #e1e7ea;
+            border-radius: 6px;
+            padding: 14px;
+            font-family: "Courier New", monospace;
+            font-size: 15px;
+            word-break: break-word;
+            min-height: 45px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: #f5f8fa;
+            border: 1px solid #e1e7ea;
+            border-radius: 7px;
+            padding: 18px;
+        }
+
+        .info-card strong {
+            display: block;
+            font-size: 12px;
+            color: #687780;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 7px;
+        }
+
+        .info-card span {
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7a878e;
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .status-bar {
+                align-items: flex-start;
+                gap: 10px;
+                flex-direction: column;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>BB84 Quantum Key Distribution Simulator</h1>
+    <header>
+        <div class="company-name">PHARMACEUTICAL DATA SECURITY SYSTEM</div>
 
-    <h2>Alice</h2>
+        <h1>Secure Data Transmission</h1>
 
-    <h3>Random Bits</h3>
-    <p id="bits"></p>
+        <p>
+            Quantum Key Distribution Prototype — BB84 Protocol
+        </p>
+    </header>
 
-    <h3>Random Bases</h3>
-    <p id="bases"></p>
+    <main>
 
-    <h3>Encoded Photons</h3>
-    <p id="photons"></p>
+        <div class="status-bar">
+            <div>
+                <div class="status-title">Transmission System</div>
+                <strong>Quantum Key Distribution Module</strong>
+            </div>
 
-    <script src="script.js"></script>
+            <div class="status">
+                ● PROTOTYPE ACTIVE
+            </div>
+        </div>
+
+        <section class="panel">
+
+            <h2>Quantum Transmission Parameters</h2>
+
+            <p class="panel-description">
+                Initial quantum-state generation and encoding stage.
+            </p>
+
+            <div class="data-section">
+                <h3>Generated Bit Sequence</h3>
+
+                <div class="data-box" id="bits">
+                    Waiting for generation...
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Selected Basis Sequence</h3>
+
+                <div class="data-box" id="bases">
+                    Waiting for generation...
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Encoded Quantum States</h3>
+
+                <div class="data-box" id="photons">
+                    Waiting for encoding...
+                </div>
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <h2>System Information</h2>
+
+            <div class="info-grid">
+
+                <div class="info-card">
+                    <strong>Protocol</strong>
+                    <span>BB84</span>
+                </div>
+
+                <div class="info-card">
+                    <strong>Current Stage</strong>
+                    <span>State Generation</span>
+                </div>
+
+                <div class="info-card">
+                    <strong>Simulation Mode</strong>
+                    <span>Classical Representation</span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Internal Prototype — Quantum-Secure Pharmaceutical Data Transmission
+    </footer>
+
     <script src="alice.js"></script>
+    <script src="bob.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

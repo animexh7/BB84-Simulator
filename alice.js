@@ -56,3 +56,44 @@ document.getElementById("photons").textContent =
     encodedPhotons
         .map(photon => `(${photon.bit}, ${photon.basis})`)
         .join("   ");
+
+// Sift the key by keeping only positions
+// where Alice and Bob used the same basis
+function siftKey(bits, aliceBases, bobBases) {
+    const siftedKey = [];
+
+    for (let i = 0; i < bits.length; i++) {
+        if (aliceBases[i] === bobBases[i]) {
+            siftedKey.push(bits[i]);
+        }
+    }
+
+    return siftedKey;
+}
+
+function encodePhoton(bits, bases) {
+    const photons = [];
+
+    for (let i = 0; i < bits.length; i++) {
+        photons.push({
+            bit: bits[i],
+            basis: bases[i]
+        });
+    }
+
+    return photons;
+}
+
+// Sift the key by keeping only positions
+// where Alice and Bob used the same basis
+function siftKey(bits, aliceBases, bobBases) {
+    const siftedKey = [];
+
+    for (let i = 0; i < bits.length; i++) {
+        if (aliceBases[i] === bobBases[i]) {
+            siftedKey.push(bits[i]);
+        }
+    }
+
+    return siftedKey;
+}
