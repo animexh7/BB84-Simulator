@@ -1,6 +1,7 @@
-// Day 2 - Alice's BB84 functions
+// Day 3 - Alice's BB84 Functions
 
 const NUM_BITS = 8;
+
 
 // Generate random bits: 0 or 1
 function generateRandomBits(numberOfBits) {
@@ -13,6 +14,7 @@ function generateRandomBits(numberOfBits) {
     return bits;
 }
 
+
 // Generate random bases: Z or X
 function generateRandomBases(numberOfBits) {
     const bases = [];
@@ -24,7 +26,8 @@ function generateRandomBases(numberOfBits) {
     return bases;
 }
 
-// Encode each bit using Alice's chosen basis
+
+// Encode each bit using the selected basis
 function encodePhoton(bits, bases) {
     const photons = [];
 
@@ -38,51 +41,6 @@ function encodePhoton(bits, bases) {
     return photons;
 }
 
-
-// Test Alice's functions
-const aliceBits = generateRandomBits(NUM_BITS);
-const aliceBases = generateRandomBases(NUM_BITS);
-const encodedPhotons = encodePhoton(aliceBits, aliceBases);
-
-console.log("Alice's bits:", aliceBits);
-console.log("Alice's bases:", aliceBases);
-console.log("Encoded photons:", encodedPhotons);
-
-// Display Alice's data on the webpage
-document.getElementById("bits").textContent = aliceBits.join(" ");
-document.getElementById("bases").textContent = aliceBases.join(" ");
-
-document.getElementById("photons").textContent =
-    encodedPhotons
-        .map(photon => `(${photon.bit}, ${photon.basis})`)
-        .join("   ");
-
-// Sift the key by keeping only positions
-// where Alice and Bob used the same basis
-function siftKey(bits, aliceBases, bobBases) {
-    const siftedKey = [];
-
-    for (let i = 0; i < bits.length; i++) {
-        if (aliceBases[i] === bobBases[i]) {
-            siftedKey.push(bits[i]);
-        }
-    }
-
-    return siftedKey;
-}
-
-function encodePhoton(bits, bases) {
-    const photons = [];
-
-    for (let i = 0; i < bits.length; i++) {
-        photons.push({
-            bit: bits[i],
-            basis: bases[i]
-        });
-    }
-
-    return photons;
-}
 
 // Sift the key by keeping only positions
 // where Alice and Bob used the same basis

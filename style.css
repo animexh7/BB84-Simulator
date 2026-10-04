@@ -1,0 +1,496 @@
+/* =====================================================
+   BB84 Pharmaceutical Data Security Prototype
+   Main UI Styles
+   ===================================================== */
+
+
+/* ---------- Global Reset ---------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f6f8;
+    color: #17212b;
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+
+/* ---------- Header ---------- */
+
+.main-header {
+    background: #12343b;
+    color: white;
+    border-bottom: 4px solid #2b6777;
+}
+
+
+.header-content {
+    max-width: 1100px;
+    margin: auto;
+    padding: 32px 30px;
+}
+
+
+.company-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #c9d9dc;
+    margin-bottom: 8px;
+}
+
+
+.main-header h1 {
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+
+.header-subtitle {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #d4e3e6;
+}
+
+
+/* ---------- Main Container ---------- */
+
+.container {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+
+/* ---------- Status Card ---------- */
+
+.status-card {
+    background: white;
+    border: 1px solid #dce4e8;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+.section-label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+
+    color: #687980;
+}
+
+
+.status-information h2 {
+    margin-top: 3px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+
+    color: #237a57;
+}
+
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #2e9b70;
+
+    box-shadow: 0 0 0 4px rgba(46, 155, 112, 0.12);
+}
+
+
+/* ---------- Panels ---------- */
+
+.panel {
+    background: white;
+    border: 1px solid #dce4e8;
+    border-radius: 10px;
+
+    padding: 30px;
+    margin-bottom: 24px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+.panel-header {
+    margin-bottom: 28px;
+}
+
+
+.panel-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+
+.panel-header p {
+    margin-top: 7px;
+    font-size: 14px;
+    color: #687980;
+}
+
+
+/* ---------- Data Sections ---------- */
+
+.data-section {
+    margin-bottom: 25px;
+}
+
+
+.data-section:last-of-type {
+    margin-bottom: 0;
+}
+
+
+.data-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 9px;
+}
+
+
+.step-number {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #edf3f5;
+    color: #315963;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.data-heading h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #33464d;
+}
+
+
+.data-description {
+    display: block;
+
+    margin-top: 1px;
+
+    font-size: 12px;
+    color: #849198;
+}
+
+
+/* ---------- Data Boxes ---------- */
+
+.data-box {
+    background: #f6f9fa;
+
+    border: 1px solid #dfe7ea;
+    border-radius: 7px;
+
+    padding: 15px 16px;
+
+    min-height: 50px;
+
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+
+    color: #243840;
+
+    word-break: break-word;
+}
+
+
+/* ---------- Action Area ---------- */
+
+.action-area {
+    margin-top: 30px;
+    padding-top: 24px;
+
+    border-top: 1px solid #e5ebed;
+
+    text-align: center;
+}
+
+
+.primary-button {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 15px 24px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #12343b;
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.primary-button:hover {
+    background: #2b6777;
+
+    box-shadow: 0 5px 14px rgba(18, 52, 59, 0.18);
+}
+
+
+.primary-button:active {
+    transform: scale(0.99);
+}
+
+
+.action-description {
+    margin-top: 9px;
+
+    font-size: 12px;
+    color: #89959b;
+}
+
+
+/* ---------- Verification Grid ---------- */
+
+.verification-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+
+.verification-card {
+    background: #f6f9fa;
+
+    border: 1px solid #dfe7ea;
+    border-radius: 8px;
+
+    padding: 20px;
+}
+
+
+.card-label {
+    display: block;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    color: #718087;
+
+    margin-bottom: 8px;
+}
+
+
+.verification-value {
+    font-family: "Courier New", monospace;
+
+    font-size: 21px;
+    font-weight: 600;
+
+    color: #183a43;
+
+    word-break: break-word;
+}
+
+
+/* ---------- Verification Status ---------- */
+
+.verification-status {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    border-radius: 8px;
+
+    background: #f1f8f5;
+    border: 1px solid #d7ebe1;
+
+    color: #216b50;
+}
+
+
+.verification-icon {
+    font-size: 18px;
+}
+
+
+.verification-status strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+
+.verification-status p {
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    color: #5d746b;
+}
+
+
+/* ---------- System Information ---------- */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+}
+
+
+.info-card {
+    background: #f6f9fa;
+
+    border: 1px solid #dfe7ea;
+    border-radius: 8px;
+
+    padding: 18px;
+}
+
+
+.info-card strong {
+    display: block;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #253b42;
+}
+
+
+/* ---------- Footer ---------- */
+
+.main-footer {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 5px 20px 30px;
+
+    text-align: center;
+
+    color: #7c898f;
+
+    font-size: 11px;
+}
+
+
+.main-footer span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #a0aaae;
+}
+
+
+/* ---------- Responsive Design ---------- */
+
+@media (max-width: 800px) {
+
+    .verification-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .header-content {
+        padding: 25px 20px;
+    }
+
+
+    .main-header h1 {
+        font-size: 27px;
+    }
+
+
+    .container {
+        margin-top: 20px;
+        padding: 0 12px;
+    }
+
+
+    .status-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+
+    .panel {
+        padding: 22px 18px;
+    }
+
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .verification-value {
+        font-size: 18px;
+    }
+
+}

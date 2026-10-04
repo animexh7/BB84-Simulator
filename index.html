@@ -1,265 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Secure Pharmaceutical Data Transmission</title>
+    <title>Secure Data Transmission | Quantum Security Prototype</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7f9;
-            color: #17212b;
-            min-height: 100vh;
-        }
-
-        header {
-            background: #12343b;
-            color: white;
-            padding: 24px 40px;
-            border-bottom: 4px solid #2b6777;
-        }
-
-        .company-name {
-            font-size: 14px;
-            letter-spacing: 2px;
-            opacity: 0.8;
-            margin-bottom: 8px;
-        }
-
-        header h1 {
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        header p {
-            margin-top: 8px;
-            color: #d5e5e8;
-            font-size: 14px;
-        }
-
-        main {
-            max-width: 1000px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
-
-        .status-bar {
-            background: white;
-            border: 1px solid #dce3e7;
-            border-radius: 8px;
-            padding: 18px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .status-title {
-            font-size: 13px;
-            color: #687780;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .status {
-            font-weight: 600;
-            color: #237a57;
-        }
-
-        .panel {
-            background: white;
-            border: 1px solid #dce3e7;
-            border-radius: 10px;
-            padding: 28px;
-            margin-bottom: 22px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-        }
-
-        .panel h2 {
-            font-size: 20px;
-            margin-bottom: 6px;
-        }
-
-        .panel-description {
-            color: #687780;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .data-section {
-            margin-bottom: 22px;
-        }
-
-        .data-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .data-section h3 {
-            font-size: 13px;
-            color: #53636b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 9px;
-        }
-
-        .data-box {
-            background: #f5f8fa;
-            border: 1px solid #e1e7ea;
-            border-radius: 6px;
-            padding: 14px;
-            font-family: "Courier New", monospace;
-            font-size: 15px;
-            word-break: break-word;
-            min-height: 45px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .info-card {
-            background: #f5f8fa;
-            border: 1px solid #e1e7ea;
-            border-radius: 7px;
-            padding: 18px;
-        }
-
-        .info-card strong {
-            display: block;
-            font-size: 12px;
-            color: #687780;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 7px;
-        }
-
-        .info-card span {
-            font-size: 15px;
-        }
-
-        footer {
-            text-align: center;
-            color: #7a878e;
-            font-size: 12px;
-            padding: 20px;
-        }
-
-        @media (max-width: 700px) {
-            header {
-                padding: 20px;
-            }
-
-            header h1 {
-                font-size: 22px;
-            }
-
-            .status-bar {
-                align-items: flex-start;
-                gap: 10px;
-                flex-direction: column;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .panel {
-                padding: 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="company-name">PHARMACEUTICAL DATA SECURITY SYSTEM</div>
+    <!-- Header -->
+    <header class="main-header">
 
-        <h1>Secure Data Transmission</h1>
+        <div class="header-content">
 
-        <p>
-            Quantum Key Distribution Prototype — BB84 Protocol
-        </p>
-    </header>
-
-    <main>
-
-        <div class="status-bar">
-            <div>
-                <div class="status-title">Transmission System</div>
-                <strong>Quantum Key Distribution Module</strong>
+            <div class="company-label">
+                PHARMACEUTICAL DATA SECURITY SYSTEM
             </div>
 
-            <div class="status">
-                ● PROTOTYPE ACTIVE
-            </div>
-        </div>
+            <h1>Secure Data Transmission</h1>
 
-        <section class="panel">
-
-            <h2>Quantum Transmission Parameters</h2>
-
-            <p class="panel-description">
-                Initial quantum-state generation and encoding stage.
+            <p class="header-subtitle">
+                Quantum Key Distribution Prototype — BB84 Protocol
             </p>
 
-            <div class="data-section">
-                <h3>Generated Bit Sequence</h3>
+        </div>
 
-                <div class="data-box" id="bits">
-                    Waiting for generation...
-                </div>
+    </header>
+
+
+    <main class="container">
+
+        <!-- System Status -->
+        <section class="status-card">
+
+            <div class="status-information">
+
+                <span class="section-label">
+                    TRANSMISSION SYSTEM
+                </span>
+
+                <h2>
+                    Quantum Key Distribution Module
+                </h2>
+
             </div>
 
-            <div class="data-section">
-                <h3>Selected Basis Sequence</h3>
-
-                <div class="data-box" id="bases">
-                    Waiting for generation...
-                </div>
-            </div>
-
-            <div class="data-section">
-                <h3>Encoded Quantum States</h3>
-
-                <div class="data-box" id="photons">
-                    Waiting for encoding...
-                </div>
+            <div class="system-status" id="systemStatus">
+                <span class="status-dot"></span>
+                <span id="statusText">SYSTEM READY</span>
             </div>
 
         </section>
 
+
+        <!-- Transmission Parameters -->
         <section class="panel">
 
-            <h2>System Information</h2>
+            <div class="panel-header">
+
+                <div>
+                    <span class="section-label">
+                        TRANSMISSION PARAMETERS
+                    </span>
+
+                    <h2>
+                        Quantum State Generation
+                    </h2>
+
+                    <p>
+                        Generation and encoding of quantum states for secure
+                        data transmission.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Generated Bits -->
+            <div class="data-section">
+
+                <div class="data-heading">
+                    <span class="step-number">01</span>
+
+                    <div>
+                        <h3>Generated Bit Sequence</h3>
+
+                        <span class="data-description">
+                            Random binary sequence
+                        </span>
+                    </div>
+                </div>
+
+                <div class="data-box" id="bits">
+                    Waiting for generation...
+                </div>
+
+            </div>
+
+
+            <!-- Bases -->
+            <div class="data-section">
+
+                <div class="data-heading">
+                    <span class="step-number">02</span>
+
+                    <div>
+                        <h3>Selected Basis Sequence</h3>
+
+                        <span class="data-description">
+                            Random measurement basis selection
+                        </span>
+                    </div>
+                </div>
+
+                <div class="data-box" id="bases">
+                    Waiting for generation...
+                </div>
+
+            </div>
+
+
+            <!-- Encoded States -->
+            <div class="data-section">
+
+                <div class="data-heading">
+                    <span class="step-number">03</span>
+
+                    <div>
+                        <h3>Encoded Quantum States</h3>
+
+                        <span class="data-description">
+                            Quantum states prepared for transmission
+                        </span>
+                    </div>
+                </div>
+
+                <div class="data-box" id="photons">
+                    Waiting for encoding...
+                </div>
+
+            </div>
+
+
+            <!-- Generate Button -->
+            <div class="action-area">
+
+                <button id="generateKeyButton" class="primary-button">
+                    GENERATE SECURE KEY
+                </button>
+
+                <p class="action-description">
+                    Initiates a new BB84 quantum key distribution simulation.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Key Verification -->
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <span class="section-label">
+                    KEY VERIFICATION
+                </span>
+
+                <h2>
+                    Secure Key Validation
+                </h2>
+
+                <p>
+                    Verification of the final key generated after basis
+                    reconciliation.
+                </p>
+
+            </div>
+
+
+            <div class="verification-grid">
+
+                <!-- Sifted Key -->
+                <div class="verification-card">
+
+                    <span class="card-label">
+                        SIFTED KEY
+                    </span>
+
+                    <div class="verification-value" id="siftedKey">
+                        —
+                    </div>
+
+                </div>
+
+
+                <!-- Matching Bits -->
+                <div class="verification-card">
+
+                    <span class="card-label">
+                        MATCHING BITS
+                    </span>
+
+                    <div class="verification-value" id="matchingBits">
+                        —
+                    </div>
+
+                </div>
+
+
+                <!-- Match Rate -->
+                <div class="verification-card">
+
+                    <span class="card-label">
+                        MATCH RATE
+                    </span>
+
+                    <div class="verification-value" id="matchRate">
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Verification Status -->
+            <div class="verification-status" id="verificationStatus">
+
+                <span class="verification-icon">
+                    ●
+                </span>
+
+                <div>
+
+                    <strong id="verificationTitle">
+                        Awaiting Transmission
+                    </strong>
+
+                    <p id="verificationMessage">
+                        Generate a secure key to begin verification.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- System Information -->
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <span class="section-label">
+                    SYSTEM INFORMATION
+                </span>
+
+                <h2>
+                    Security Module
+                </h2>
+
+            </div>
+
 
             <div class="info-grid">
 
                 <div class="info-card">
-                    <strong>Protocol</strong>
-                    <span>BB84</span>
+
+                    <span class="card-label">
+                        PROTOCOL
+                    </span>
+
+                    <strong>
+                        BB84
+                    </strong>
+
                 </div>
 
-                <div class="info-card">
-                    <strong>Current Stage</strong>
-                    <span>State Generation</span>
-                </div>
 
                 <div class="info-card">
-                    <strong>Simulation Mode</strong>
-                    <span>Classical Representation</span>
+
+                    <span class="card-label">
+                        KEY LENGTH
+                    </span>
+
+                    <strong>
+                        8 Bits
+                    </strong>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <span class="card-label">
+                        MODE
+                    </span>
+
+                    <strong>
+                        Simulation
+                    </strong>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <span class="card-label">
+                        SECURITY METHOD
+                    </span>
+
+                    <strong>
+                        Quantum Key Distribution
+                    </strong>
+
                 </div>
 
             </div>
@@ -268,13 +328,26 @@
 
     </main>
 
-    <footer>
-        Internal Prototype — Quantum-Secure Pharmaceutical Data Transmission
+
+    <!-- Footer -->
+    <footer class="main-footer">
+
+        <p>
+            Internal Prototype — Quantum-Secure Pharmaceutical Data Transmission
+        </p>
+
+        <span>
+            BB84 Simulation Environment
+        </span>
+
     </footer>
 
+
+    <!-- JavaScript -->
     <script src="alice.js"></script>
     <script src="bob.js"></script>
     <script src="script.js"></script>
 
 </body>
+
 </html>
