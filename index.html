@@ -12,9 +12,8 @@
 
 <body>
 
-    <!-- Header -->
+    <!-- HEADER -->
     <header class="main-header">
-
         <div class="header-content">
 
             <div class="company-label">
@@ -28,13 +27,12 @@
             </p>
 
         </div>
-
     </header>
 
 
     <main class="container">
 
-        <!-- System Status -->
+        <!-- SYSTEM STATUS -->
         <section class="status-card">
 
             <div class="status-information">
@@ -57,33 +55,99 @@
         </section>
 
 
-        <!-- Transmission Parameters -->
+        <!-- PROCESS TRACKER -->
         <section class="panel">
 
             <div class="panel-header">
 
-                <div>
-                    <span class="section-label">
-                        TRANSMISSION PARAMETERS
-                    </span>
+                <span class="section-label">
+                    TRANSMISSION PROCESS
+                </span>
 
-                    <h2>
-                        Quantum State Generation
-                    </h2>
+                <h2>Security Pipeline</h2>
 
-                    <p>
-                        Generation and encoding of quantum states for secure
-                        data transmission.
-                    </p>
-                </div>
+                <p>
+                    BB84 quantum key distribution simulation stages.
+                </p>
 
             </div>
 
 
-            <!-- Generated Bits -->
+            <div class="process-grid">
+
+                <div class="process-step" id="stepGeneration">
+                    <span class="process-number">01</span>
+                    <div>
+                        <strong>State Generation</strong>
+                        <span>Random bits</span>
+                    </div>
+                </div>
+
+
+                <div class="process-step" id="stepEncoding">
+                    <span class="process-number">02</span>
+                    <div>
+                        <strong>Quantum Encoding</strong>
+                        <span>State preparation</span>
+                    </div>
+                </div>
+
+
+                <div class="process-step" id="stepMeasurement">
+                    <span class="process-number">03</span>
+                    <div>
+                        <strong>Measurement</strong>
+                        <span>State detection</span>
+                    </div>
+                </div>
+
+
+                <div class="process-step" id="stepSifting">
+                    <span class="process-number">04</span>
+                    <div>
+                        <strong>Key Sifting</strong>
+                        <span>Basis reconciliation</span>
+                    </div>
+                </div>
+
+
+                <div class="process-step" id="stepVerification">
+                    <span class="process-number">05</span>
+                    <div>
+                        <strong>Verification</strong>
+                        <span>Key agreement</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TRANSMISSION PARAMETERS -->
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <span class="section-label">
+                    TRANSMISSION PARAMETERS
+                </span>
+
+                <h2>Quantum State Generation</h2>
+
+                <p>
+                    Generation and encoding of quantum states for secure
+                    data transmission.
+                </p>
+
+            </div>
+
+
+            <!-- BITS -->
             <div class="data-section">
 
                 <div class="data-heading">
+
                     <span class="step-number">01</span>
 
                     <div>
@@ -93,6 +157,7 @@
                             Random binary sequence
                         </span>
                     </div>
+
                 </div>
 
                 <div class="data-box" id="bits">
@@ -102,10 +167,11 @@
             </div>
 
 
-            <!-- Bases -->
+            <!-- BASES -->
             <div class="data-section">
 
                 <div class="data-heading">
+
                     <span class="step-number">02</span>
 
                     <div>
@@ -115,6 +181,7 @@
                             Random measurement basis selection
                         </span>
                     </div>
+
                 </div>
 
                 <div class="data-box" id="bases">
@@ -124,10 +191,11 @@
             </div>
 
 
-            <!-- Encoded States -->
+            <!-- PHOTONS -->
             <div class="data-section">
 
                 <div class="data-heading">
+
                     <span class="step-number">03</span>
 
                     <div>
@@ -137,6 +205,7 @@
                             Quantum states prepared for transmission
                         </span>
                     </div>
+
                 </div>
 
                 <div class="data-box" id="photons">
@@ -146,7 +215,7 @@
             </div>
 
 
-            <!-- Generate Button -->
+            <!-- BUTTON -->
             <div class="action-area">
 
                 <button id="generateKeyButton" class="primary-button">
@@ -162,7 +231,7 @@
         </section>
 
 
-        <!-- Key Verification -->
+        <!-- KEY VERIFICATION -->
         <section class="panel">
 
             <div class="panel-header">
@@ -171,13 +240,10 @@
                     KEY VERIFICATION
                 </span>
 
-                <h2>
-                    Secure Key Validation
-                </h2>
+                <h2>Secure Key Validation</h2>
 
                 <p>
-                    Verification of the final key generated after basis
-                    reconciliation.
+                    Verification of the final key after basis reconciliation.
                 </p>
 
             </div>
@@ -185,7 +251,6 @@
 
             <div class="verification-grid">
 
-                <!-- Sifted Key -->
                 <div class="verification-card">
 
                     <span class="card-label">
@@ -199,11 +264,10 @@
                 </div>
 
 
-                <!-- Matching Bits -->
                 <div class="verification-card">
 
                     <span class="card-label">
-                        MATCHING BITS
+                        KEY AGREEMENT
                     </span>
 
                     <div class="verification-value" id="matchingBits">
@@ -213,11 +277,10 @@
                 </div>
 
 
-                <!-- Match Rate -->
                 <div class="verification-card">
 
                     <span class="card-label">
-                        MATCH RATE
+                        AGREEMENT RATE
                     </span>
 
                     <div class="verification-value" id="matchRate">
@@ -229,7 +292,7 @@
             </div>
 
 
-            <!-- Verification Status -->
+            <!-- VERIFICATION STATUS -->
             <div class="verification-status" id="verificationStatus">
 
                 <span class="verification-icon">
@@ -253,18 +316,79 @@
         </section>
 
 
-        <!-- System Information -->
+        <!-- TECHNICAL DETAILS -->
+        <section class="panel technical-panel">
+
+            <details>
+
+                <summary>
+                    <span>
+                        TECHNICAL TRANSMISSION DETAILS
+                    </span>
+
+                    <small>
+                        View simulation data
+                    </small>
+                </summary>
+
+
+                <div class="technical-content">
+
+                    <div class="technical-item">
+
+                        <span class="card-label">
+                            MEASUREMENT BASIS SEQUENCE
+                        </span>
+
+                        <div class="data-box" id="bobBases">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="technical-item">
+
+                        <span class="card-label">
+                            MEASURED BIT SEQUENCE
+                        </span>
+
+                        <div class="data-box" id="bobKey">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="technical-item">
+
+                        <span class="card-label">
+                            MATCHING BASIS POSITIONS
+                        </span>
+
+                        <div class="data-box" id="matchingPositions">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+        </section>
+
+
+        <!-- SECURITY SUMMARY -->
         <section class="panel">
 
             <div class="panel-header">
 
                 <span class="section-label">
-                    SYSTEM INFORMATION
+                    SECURITY SUMMARY
                 </span>
 
-                <h2>
-                    Security Module
-                </h2>
+                <h2>Transmission Overview</h2>
 
             </div>
 
@@ -287,7 +411,7 @@
                 <div class="info-card">
 
                     <span class="card-label">
-                        KEY LENGTH
+                        TRANSMISSION SIZE
                     </span>
 
                     <strong>
@@ -300,11 +424,11 @@
                 <div class="info-card">
 
                     <span class="card-label">
-                        MODE
+                        KEY METHOD
                     </span>
 
                     <strong>
-                        Simulation
+                        Quantum Key Distribution
                     </strong>
 
                 </div>
@@ -313,11 +437,11 @@
                 <div class="info-card">
 
                     <span class="card-label">
-                        SECURITY METHOD
+                        ENVIRONMENT
                     </span>
 
                     <strong>
-                        Quantum Key Distribution
+                        Simulation
                     </strong>
 
                 </div>
@@ -329,7 +453,7 @@
     </main>
 
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="main-footer">
 
         <p>
@@ -337,13 +461,13 @@
         </p>
 
         <span>
-            BB84 Simulation Environment
+            BB84 Simulation Environment • Not intended for production use
         </span>
 
     </footer>
 
 
-    <!-- JavaScript -->
+    <!-- SCRIPTS -->
     <script src="alice.js"></script>
     <script src="bob.js"></script>
     <script src="script.js"></script>
