@@ -1,477 +1,295 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Secure Data Transmission | Quantum Security Prototype</title>
+    <title>Quantum Key Distribution Simulator</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Base layout — works even if the existing CSS differs */
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header, footer {
+            padding: 22px;
+            text-align: center;
+            background: #10213b;
+            color: white;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #dce3ee;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 18px 0;
+            box-shadow: 0 3px 12px #10213b0b;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            color: #183b68;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+        }
+
+        .data {
+            padding: 12px;
+            background: #f2f6fc;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+            min-height: 24px;
+            font-family: monospace;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .step {
+            padding: 14px;
+            border: 1px solid #dce3ee;
+            border-radius: 9px;
+            background: #f8fafc;
+        }
+
+        .step.active {
+            border-color: #2875df;
+            background: #eaf2ff;
+        }
+
+        .step.completed {
+            border-color: #21865b;
+            background: #eaf8f0;
+        }
+
+        button {
+            display: block;
+            margin: 24px auto;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #1769d2;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1054ae;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #statusText {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .note {
+            color: #53627a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        footer {
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="main-header">
-        <div class="header-content">
-
-            <div class="company-label">
-                PHARMACEUTICAL DATA SECURITY SYSTEM
-            </div>
-
-            <h1>Secure Data Transmission</h1>
-
-            <p class="header-subtitle">
-                Quantum Key Distribution Prototype — BB84 Protocol
-            </p>
-
-        </div>
+    <header>
+        <h1>Quantum Key Distribution Simulator</h1>
+        <p>BB84 Protocol · Secure Communication Demonstration</p>
     </header>
 
-
-    <main class="container">
+    <main>
 
         <!-- SYSTEM STATUS -->
-        <section class="status-card">
-
-            <div class="status-information">
-
-                <span class="section-label">
-                    TRANSMISSION SYSTEM
-                </span>
-
-                <h2>
-                    Quantum Key Distribution Module
-                </h2>
-
-            </div>
-
-            <div class="system-status" id="systemStatus">
-                <span class="status-dot"></span>
-                <span id="statusText">SYSTEM READY</span>
-            </div>
-
+        <section class="panel">
+            <h2>System Status</h2>
+            <p id="statusText" role="status" aria-live="polite">
+                Ready to initialize the simulation.
+            </p>
         </section>
-
 
         <!-- PROCESS TRACKER -->
         <section class="panel">
+            <h2>Simulation Process</h2>
 
-            <div class="panel-header">
+            <div class="steps">
+                <div class="step" id="stepGeneration">
+                    <strong>Step 1</strong>
+                    <p>Bit Generation</p>
+                </div>
 
-                <span class="section-label">
-                    TRANSMISSION PROCESS
-                </span>
+                <div class="step" id="stepEncoding">
+                    <strong>Step 2</strong>
+                    <p>Quantum Encoding</p>
+                </div>
 
-                <h2>Security Pipeline</h2>
+                <div class="step" id="stepMeasurement">
+                    <strong>Step 3</strong>
+                    <p>Interception and Measurement</p>
+                </div>
 
-                <p>
-                    BB84 quantum key distribution simulation stages.
-                </p>
+                <div class="step" id="stepSifting">
+                    <strong>Step 4</strong>
+                    <p>Key Sifting</p>
+                </div>
 
+                <div class="step" id="stepVerification">
+                    <strong>Step 5</strong>
+                    <p>Key Verification</p>
+                </div>
             </div>
-
-
-            <div class="process-grid">
-
-                <div class="process-step" id="stepGeneration">
-                    <span class="process-number">01</span>
-                    <div>
-                        <strong>State Generation</strong>
-                        <span>Random bits</span>
-                    </div>
-                </div>
-
-
-                <div class="process-step" id="stepEncoding">
-                    <span class="process-number">02</span>
-                    <div>
-                        <strong>Quantum Encoding</strong>
-                        <span>State preparation</span>
-                    </div>
-                </div>
-
-
-                <div class="process-step" id="stepMeasurement">
-                    <span class="process-number">03</span>
-                    <div>
-                        <strong>Measurement</strong>
-                        <span>State detection</span>
-                    </div>
-                </div>
-
-
-                <div class="process-step" id="stepSifting">
-                    <span class="process-number">04</span>
-                    <div>
-                        <strong>Key Sifting</strong>
-                        <span>Basis reconciliation</span>
-                    </div>
-                </div>
-
-
-                <div class="process-step" id="stepVerification">
-                    <span class="process-number">05</span>
-                    <div>
-                        <strong>Verification</strong>
-                        <span>Key agreement</span>
-                    </div>
-                </div>
-
-            </div>
-
         </section>
 
-
-        <!-- TRANSMISSION PARAMETERS -->
+        <!-- ALICE'S DATA -->
         <section class="panel">
+            <h2>1. Bit Generation</h2>
 
-            <div class="panel-header">
-
-                <span class="section-label">
-                    TRANSMISSION PARAMETERS
-                </span>
-
-                <h2>Quantum State Generation</h2>
-
-                <p>
-                    Generation and encoding of quantum states for secure
-                    data transmission.
-                </p>
-
-            </div>
-
-
-            <!-- BITS -->
-            <div class="data-section">
-
-                <div class="data-heading">
-
-                    <span class="step-number">01</span>
-
-                    <div>
-                        <h3>Generated Bit Sequence</h3>
-
-                        <span class="data-description">
-                            Random binary sequence
-                        </span>
-                    </div>
-
+            <div class="grid">
+                <div>
+                    <h3>Generated Bits</h3>
+                    <div class="data" id="bits">—</div>
                 </div>
-
-                <div class="data-box" id="bits">
-                    Waiting for generation...
-                </div>
-
-            </div>
-
-
-            <!-- BASES -->
-            <div class="data-section">
-
-                <div class="data-heading">
-
-                    <span class="step-number">02</span>
-
-                    <div>
-                        <h3>Selected Basis Sequence</h3>
-
-                        <span class="data-description">
-                            Random measurement basis selection
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="data-box" id="bases">
-                    Waiting for generation...
-                </div>
-
-            </div>
-
-
-            <!-- PHOTONS -->
-            <div class="data-section">
-
-                <div class="data-heading">
-
-                    <span class="step-number">03</span>
-
-                    <div>
-                        <h3>Encoded Quantum States</h3>
-
-                        <span class="data-description">
-                            Quantum states prepared for transmission
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="data-box" id="photons">
-                    Waiting for encoding...
-                </div>
-
-            </div>
-
-
-            <!-- BUTTON -->
-            <div class="action-area">
-
-                <button id="generateKeyButton" class="primary-button">
-                    GENERATE SECURE KEY
-                </button>
-
-                <p class="action-description">
-                    Initiates a new BB84 quantum key distribution simulation.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- KEY VERIFICATION -->
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <span class="section-label">
-                    KEY VERIFICATION
-                </span>
-
-                <h2>Secure Key Validation</h2>
-
-                <p>
-                    Verification of the final key after basis reconciliation.
-                </p>
-
-            </div>
-
-
-            <div class="verification-grid">
-
-                <div class="verification-card">
-
-                    <span class="card-label">
-                        SIFTED KEY
-                    </span>
-
-                    <div class="verification-value" id="siftedKey">
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="verification-card">
-
-                    <span class="card-label">
-                        KEY AGREEMENT
-                    </span>
-
-                    <div class="verification-value" id="matchingBits">
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="verification-card">
-
-                    <span class="card-label">
-                        AGREEMENT RATE
-                    </span>
-
-                    <div class="verification-value" id="matchRate">
-                        —
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- VERIFICATION STATUS -->
-            <div class="verification-status" id="verificationStatus">
-
-                <span class="verification-icon">
-                    ●
-                </span>
 
                 <div>
-
-                    <strong id="verificationTitle">
-                        Awaiting Transmission
-                    </strong>
-
-                    <p id="verificationMessage">
-                        Generate a secure key to begin verification.
-                    </p>
-
+                    <h3>Preparation Bases</h3>
+                    <div class="data" id="bases">—</div>
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- TECHNICAL DETAILS -->
-        <section class="panel technical-panel">
-
-            <details>
-
-                <summary>
-                    <span>
-                        TECHNICAL TRANSMISSION DETAILS
-                    </span>
-
-                    <small>
-                        View simulation data
-                    </small>
-                </summary>
-
-
-                <div class="technical-content">
-
-                    <div class="technical-item">
-
-                        <span class="card-label">
-                            MEASUREMENT BASIS SEQUENCE
-                        </span>
-
-                        <div class="data-box" id="bobBases">
-                            —
-                        </div>
-
-                    </div>
-
-
-                    <div class="technical-item">
-
-                        <span class="card-label">
-                            MEASURED BIT SEQUENCE
-                        </span>
-
-                        <div class="data-box" id="bobKey">
-                            —
-                        </div>
-
-                    </div>
-
-
-                    <div class="technical-item">
-
-                        <span class="card-label">
-                            MATCHING BASIS POSITIONS
-                        </span>
-
-                        <div class="data-box" id="matchingPositions">
-                            —
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </details>
-
-        </section>
-
-
-        <!-- SECURITY SUMMARY -->
+        <!-- ENCODING -->
         <section class="panel">
+            <h2>2. Quantum State Encoding</h2>
 
-            <div class="panel-header">
+            <p class="note">
+                Bits are represented using the Z basis (|0⟩, |1⟩)
+                or the X basis (|+⟩, |−⟩).
+            </p>
 
-                <span class="section-label">
-                    SECURITY SUMMARY
-                </span>
-
-                <h2>Transmission Overview</h2>
-
-            </div>
-
-
-            <div class="info-grid">
-
-                <div class="info-card">
-
-                    <span class="card-label">
-                        PROTOCOL
-                    </span>
-
-                    <strong>
-                        BB84
-                    </strong>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <span class="card-label">
-                        TRANSMISSION SIZE
-                    </span>
-
-                    <strong>
-                        8 Bits
-                    </strong>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <span class="card-label">
-                        KEY METHOD
-                    </span>
-
-                    <strong>
-                        Quantum Key Distribution
-                    </strong>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <span class="card-label">
-                        ENVIRONMENT
-                    </span>
-
-                    <strong>
-                        Simulation
-                    </strong>
-
-                </div>
-
-            </div>
-
+            <h3>Encoded States</h3>
+            <div class="data" id="photons">—</div>
         </section>
+
+        <!-- BOB'S DATA -->
+        <section class="panel">
+            <h2>3. Receiver Measurement</h2>
+
+            <div class="grid">
+                <div>
+                    <h3>Measurement Bases</h3>
+                    <div class="data" id="bobBases">—</div>
+                </div>
+
+                <div>
+                    <h3>Measured Bits</h3>
+                    <div class="data" id="bobKey">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY SIFTING -->
+        <section class="panel">
+            <h2>4. Key Sifting</h2>
+
+            <p class="note">
+                Only positions where the preparation and measurement
+                bases match are retained.
+            </p>
+
+            <div class="grid">
+                <div>
+                    <h3>Matching Positions</h3>
+                    <div class="data" id="matchingPositions">—</div>
+                </div>
+
+                <div>
+                    <h3>Sifted Key</h3>
+                    <div class="data" id="siftedKey">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VERIFICATION -->
+        <section class="panel">
+            <h2>5. Key Verification</h2>
+
+            <div class="grid">
+                <div>
+                    <h3>Matching Bits</h3>
+                    <div class="data" id="matchingBits">—</div>
+                </div>
+
+                <div>
+                    <h3>Key Match Rate</h3>
+                    <div class="data" id="matchRate">—</div>
+                </div>
+            </div>
+
+            <h3 id="verificationTitle">Verification pending</h3>
+
+            <p id="verificationMessage" aria-live="polite">
+                Generate a key to begin verification.
+            </p>
+        </section>
+
+        <!-- GENERATE BUTTON -->
+        <button
+            id="generateKeyButton"
+            type="button"
+            onclick="generateSecureKey()"
+        >
+            GENERATE SECURE KEY
+        </button>
+
+        <p class="note">
+            Educational simulation only. This project models the BB84
+            protocol in JavaScript; it does not use real quantum hardware.
+            Key agreement alone does not establish security.
+        </p>
 
     </main>
 
-
-    <!-- FOOTER -->
-    <footer class="main-footer">
-
-        <p>
-            Internal Prototype — Quantum-Secure Pharmaceutical Data Transmission
-        </p>
-
-        <span>
-            BB84 Simulation Environment • Not intended for production use
-        </span>
-
+    <footer>
+        <p>BB84 Quantum Key Distribution Simulator</p>
+        <p>Educational Cybersecurity Project</p>
     </footer>
 
-
-    <!-- SCRIPTS -->
+    <!-- Load dependencies before the main simulation script -->
     <script src="alice.js"></script>
     <script src="bob.js"></script>
+    <script src="eve.js"></script>
     <script src="script.js"></script>
 
 </body>
-
 </html>
