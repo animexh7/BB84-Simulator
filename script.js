@@ -146,10 +146,24 @@ async function generateSecureKey() {
 
         await delay(600);
 
-        const eveResult = interceptAndResend(alicePhotons);
+        
+        const eveToggle = document.getElementById("eveToggle");
+        const eveEnabled = eveToggle ? eveToggle.checked : false;
 
-        // Eve forwards newly prepared photons to Bob.
-        const photonsSentToBob = eveResult.forwardedPhotons;
+        let eveResult;
+        let photonsSentToBob;
+
+        if (eveEnabled) {
+            eveResult = interceptAndResend(alicePhotons);
+            photonsSentToBob = eveResult.forwardedPhotons;
+        } else {
+            eveResult = {
+                eveBases: [],
+                eveBits: []
+            };
+            photonsSentToBob = alicePhotons;
+        }
+
 
         // ---------------------------------------------
         // STEP 4: Bob chooses bases and measures photons.
