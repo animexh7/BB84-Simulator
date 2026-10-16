@@ -269,8 +269,12 @@ async function generateSecureKey() {
         // ---------------------------------------------
         // STEP 7: Display the verification result.
         // ---------------------------------------------
+
+        // STEP 7: Display the verification result.
+        const ERROR_THRESHOLD = 11;
+
         if (totalSiftedBits === 0) {
-            updateText("verificationTitle", "Insufficient key data");
+            updateText("verificationTitle", "Insufficient Key Data");
             updateText(
                 "verificationMessage",
                 "No matching bases were found. Run the simulation again."
@@ -279,27 +283,37 @@ async function generateSecureKey() {
                 "statusText",
                 "Simulation complete. No sifted key was produced."
             );
-        } else if (errorCount > 0) {
-            updateText("verificationTitle", "Possible interference detected");
+
+        } else if (errorRate > ERROR_THRESHOLD) {
+            updateText(
+                "verificationTitle",
+                "Eavesdropping Detected — Key Discarded"
+            );
             updateText(
                 "verificationMessage",
-                `The sifted keys differ at ${errorCount} of ${totalSiftedBits} positions. The estimated error rate is ${errorRate.toFixed(1)}%. This may indicate eavesdropping or another source of error.`
+                `The estimated error rate is ${errorRate.toFixed(1)}%, which is above the ${ERROR_THRESHOLD}% demonstration threshold. Do not use this key.`
             );
+            document.getElementById("verificationTitle").style.color = "red";
+            document.getElementById("verificationMessage").style.color = "red";
             updateText(
                 "statusText",
-                "Simulation complete. Differences were detected in the sifted keys."
+                "Key rejected because the error rate exceeded the threshold."
             );
+
         } else {
-            updateText("verificationTitle", "No errors observed");
+            updateText("verificationTitle", "Key Verified");
+            document.getElementById("verificationTitle").style.color = "green";
+            document.getElementById("verificationMessage").style.color = "green";
             updateText(
                 "verificationMessage",
-                "The sifted keys match in this run. This does not prove that the channel is secure or that Eve was absent."
+                `The estimated error rate is ${errorRate.toFixed(1)}%, which is within the ${ERROR_THRESHOLD}% demonstration threshold. This does not prove the key is secure.`
             );
             updateText(
                 "statusText",
-                "Simulation complete. No sifted-key errors were observed."
+                "Key passed the demonstration error-rate check."
             );
         }
+
 
         setStepState("stepVerification", "completed");
 
