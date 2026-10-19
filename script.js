@@ -86,7 +86,7 @@ async function generateSecureKey() {
 
         await delay(300);
 
-        const numberOfBits = window.NUM_BITS || 128;
+        const numberOfBits = 2048;
 
         const aliceBits = generateRandomBits(numberOfBits);
         const aliceBases = generateRandomBases(numberOfBits);
