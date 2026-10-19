@@ -1,0 +1,244 @@
+
+/* Pharmaceutical Data Encryption and Decryption */
+
+const pharmaInput = document.getElementById("pharmaData");
+const encryptButton = document.getElementById("encryptBtn");
+const decryptButton = document.getElementById("decryptBtn");
+const encryptedOutput = document.getElementById("encryptedData");
+const decryptedOutput = document.getElementById("decryptedData");
+const pharmaStatus = document.getElementById("pharmaStatus");
+
+let encryptedRecord = null;
+let activeAESKey = null;
+let keyUsedForEncryption = null;
+let operationInProgress = false;
+
+function getVerifiedKeyBits() {
+    const title = document.getElementById("verificationTitle");
+
+    if (
+        !window.bb84KeyVerified ||
+        !Array.isArray(window.verifiedBB84Key) ||
+        window.verifiedBB84Key.length === 0 ||
+        !title ||
+        title.textContent.trim() !== "Key Verified"
+    ) {
+        return null;
+    }
+
+    return window.verifiedBB84Key.slice();
+}
+
+function updatePharmaButtons() {
+    const hasVerifiedKey = getVerifiedKeyBits() !== null;
+
+    if (encryptButton) {
+        encryptButton.disabled = operationInProgress || !hasVerifiedKey;
+    }
+
+    if (decryptButton) {
+        decryptButton.disabled =
+            operationInProgress ||
+            !hasVerifiedKey ||
+            !encryptedRecord ||
+            !activeAESKey;
+    }
+}
+
+function clearPharmaResults(message) {
+    encryptedRecord = null;
+    activeAESKey = null;
+    keyUsedForEncryption = null;
+
+    if (encryptedOutput) encryptedOutput.textContent = "No data encrypted.";
+    if (decryptedOutput) decryptedOutput.textContent = "No data decrypted yet.";
+    if (pharmaStatus) pharmaStatus.textContent = message;
+
+    updatePharmaButtons();
+}
+
+// Called whenever a new BB84 simulation begins.
+window.resetPharmaForNewSimulation = function () {
+    clearPharmaResults(
+        "Generate and verify a new BB84 key before encrypting data."
+    );
+};
+
+async function deriveAESKey(bits) {
+    const bitString = bits.join("");
+    const encoder = new TextEncoder();
+
+    const digest = await window.crypto.subtle.digest(
+        "SHA-256",
+        encoder.encode(bitString)
+    );
+
+    return await window.crypto.subtle.importKey(
+        "raw",
+        digest,
+        { name: "AES-GCM" },
+        false,
+        ["encrypt", "decrypt"]
+    );
+}
+
+function sameBits(first, second) {
+    return Array.isArray(first) &&
+        Array.isArray(second) &&
+        first.length === second.length &&
+        first.every((bit, index) => bit === second[index]);
+}
+
+if (pharmaInput && encryptButton && decryptButton) {
+    encryptButton.addEventListener("click", async function () {
+        if (operationInProgress) return;
+
+        // Remove any previous result before starting a new encryption.
+        clearPharmaResults("Preparing encryption...");
+
+        const bits = getVerifiedKeyBits();
+
+        if (!bits) {
+            pharmaStatus.textContent =
+                "Please generate and verify a matching BB84 key first.";
+            updatePharmaButtons();
+            return;
+        }
+
+        const data = pharmaInput.value.trim();
+
+        if (!data) {
+            pharmaStatus.textContent = "Please enter pharmaceutical data.";
+            updatePharmaButtons();
+            return;
+        }
+
+        if (!window.crypto || !window.crypto.subtle) {
+            pharmaStatus.textContent =
+                "Web Crypto is unavailable. Run the site on localhost or HTTPS.";
+            updatePharmaButtons();
+            return;
+        }
+
+        operationInProgress = true;
+        updatePharmaButtons();
+        pharmaStatus.textContent = "Encrypting data...";
+
+        try {
+            const aesKey = await deriveAESKey(bits);
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const plaintextBytes = new TextEncoder().encode(data);
+
+            const ciphertext = await window.crypto.subtle.encrypt(
+                { name: "AES-GCM", iv: iv },
+                aesKey,
+                plaintextBytes
+            );
+
+            // Do not keep results if the BB84 key changed during encryption.
+            const currentBits = getVerifiedKeyBits();
+
+            if (!sameBits(bits, currentBits)) {
+                clearPharmaResults(
+                    "The BB84 key changed. Generate and verify a new key."
+                );
+                return;
+            }
+
+            activeAESKey = aesKey;
+            keyUsedForEncryption = bits.slice();
+
+            encryptedRecord = {
+                iv: Array.from(iv),
+                ciphertext: Array.from(new Uint8Array(ciphertext))
+            };
+
+            encryptedOutput.textContent = JSON.stringify(encryptedRecord);
+            decryptedOutput.textContent = "No data decrypted yet.";
+
+            pharmaStatus.textContent =
+                "Encryption successful using the verified BB84 key.";
+        } catch (error) {
+            console.error("Encryption error:", error);
+            clearPharmaResults("Encryption failed. Please try again.");
+        } finally {
+            operationInProgress = false;
+            updatePharmaButtons();
+        }
+    });
+
+    decryptButton.addEventListener("click", async function () {
+        if (operationInProgress) return;
+
+        const bits = getVerifiedKeyBits();
+
+        if (!bits) {
+            if (decryptedOutput) {
+                decryptedOutput.textContent = "No data decrypted yet.";
+            }
+            pharmaStatus.textContent =
+                "Please generate and verify a matching BB84 key first.";
+            updatePharmaButtons();
+            return;
+        }
+
+        if (
+            !encryptedRecord ||
+            !activeAESKey ||
+            !keyUsedForEncryption
+        ) {
+            decryptedOutput.textContent = "No data decrypted yet.";
+            pharmaStatus.textContent =
+                "Please encrypt data using the current verified key first.";
+            updatePharmaButtons();
+            return;
+        }
+
+        // Reject an encrypted record made with a different BB84 key.
+        if (!sameBits(bits, keyUsedForEncryption)) {
+            clearPharmaResults(
+                "The BB84 key has changed. Encrypt your data again with the current verified key."
+            );
+            return;
+        }
+
+        operationInProgress = true;
+        updatePharmaButtons();
+        pharmaStatus.textContent = "Decrypting data...";
+
+        try {
+            const plaintext = await window.crypto.subtle.decrypt(
+                {
+                    name: "AES-GCM",
+                    iv: new Uint8Array(encryptedRecord.iv)
+                },
+                activeAESKey,
+                new Uint8Array(encryptedRecord.ciphertext)
+            );
+
+            // Check again in case a new simulation started while decrypting.
+            const currentBits = getVerifiedKeyBits();
+
+            if (!sameBits(bits, currentBits) ||
+                !sameBits(bits, keyUsedForEncryption)) {
+                decryptedOutput.textContent = "No data decrypted yet.";
+                pharmaStatus.textContent =
+                    "The BB84 key changed. Please encrypt the data again.";
+                return;
+            }
+
+            decryptedOutput.textContent = new TextDecoder().decode(plaintext);
+            pharmaStatus.textContent = "Decryption successful. Original data recovered.";
+        } catch (error) {
+            console.error("Decryption error:", error);
+            decryptedOutput.textContent = "Decryption failed.";
+            pharmaStatus.textContent =
+                "Decryption failed. Please verify the key and encrypted data.";
+        } finally {
+            operationInProgress = false;
+            updatePharmaButtons();
+        }
+    });
+    window.addEventListener("bb84-key-updated", updatePharmaButtons);
+    updatePharmaButtons();
+}

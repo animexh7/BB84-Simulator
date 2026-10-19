@@ -279,14 +279,16 @@
                 Generate a key to begin verification.
             </p>
         </section>
-        
+
         <!-- EAVESDROPPING TOGGLE -->
         <section class="panel">
             <h2>Eavesdropping Simulation</h2>
+
             <label>
                 <input type="checkbox" id="eveToggle">
                 Simulate Eavesdropping (Eve)
             </label>
+
             <p class="note">
                 Turn this on to simulate Eve intercepting and resending photons.
             </p>
@@ -307,6 +309,45 @@
             Key agreement alone does not establish security.
         </p>
 
+        <!-- PHARMACEUTICAL DATA ENCRYPTION -->
+        <section class="panel">
+            <h2>Pharmaceutical Data Security</h2>
+
+            <p>
+                Enter pharmaceutical formulation data to prepare it
+                for secure transmission.
+            </p>
+
+            <label for="pharmaData">Formulation Data:</label>
+
+            <textarea
+                id="pharmaData"
+                placeholder="Enter pharmaceutical formulation details..."
+                rows="4"
+                style="width: 100%; margin-top: 10px;"
+            ></textarea>
+
+            <button id="encryptBtn" type="button">
+                Encrypt Data
+            </button>
+
+            <button id="decryptBtn" type="button" disabled>
+                Decrypt Data
+            </button>
+
+            <h3>Encrypted Data</h3>
+            <div class="data" id="encryptedData">
+                No data encrypted yet.
+            </div>
+
+            <h3>Decrypted Data</h3>
+            <div class="data" id="decryptedData">
+                No data decrypted yet.
+            </div>
+
+            <p id="pharmaStatus">Waiting for input.</p>
+        </section>
+
     </main>
 
     <footer>
@@ -319,6 +360,7 @@
     <script src="bob.js"></script>
     <script src="eve.js"></script>
     <script src="script.js"></script>
+    <script src="pharma.js"></script>
 
 </body>
 </html>

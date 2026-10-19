@@ -4,12 +4,13 @@
    Alice -> Eve -> Bob -> Sifting -> QBER Verification
    ===================================================== */
 
-// Delay helper for process animation.
+window.verifiedBB84Key = null;
+window.bb84KeyVerified = false;
+
 function delay(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-// Safely update interface text.
 function updateText(elementId, value) {
     const element = document.getElementById(elementId);
 
@@ -18,7 +19,14 @@ function updateText(elementId, value) {
     }
 }
 
-// Update process tracker state.
+function formatSequence(sequence) {
+    if (!sequence || sequence.length === 0) {
+        return "—";
+    }
+
+    return sequence.join(" ");
+}
+
 function setStepState(stepId, state) {
     const step = document.getElementById(stepId);
 
@@ -33,24 +41,46 @@ function setStepState(stepId, state) {
     }
 }
 
-// Reset process tracker.
 function resetProcessSteps() {
-    [
+    const steps = [
         "stepGeneration",
         "stepEncoding",
         "stepMeasurement",
         "stepSifting",
         "stepVerification"
-    ].forEach(id => setStepState(id, ""));
+    ];
+
+    steps.forEach(id => setStepState(id, ""));
 }
 
-// Main simulation.
 async function generateSecureKey() {
     const button = document.getElementById("generateKeyButton");
 
     if (button && button.disabled) return;
 
-    // Check that required functions are available.
+    // Clear the previous key before starting another run.
+    window.verifiedBB84Key = null;
+    window.bb84KeyVerified = false;
+
+    if (typeof window.resetPharmaForNewSimulation === "function") {
+        window.resetPharmaForNewSimulation();
+    }
+
+    resetProcessSteps();
+
+    updateText("statusText", "Initializing simulation...");
+    updateText("verificationTitle", "Verification Pending");
+    updateText(
+        "verificationMessage",
+        "Generating bits and simulating quantum communication."
+    );
+
+    const titleElement = document.getElementById("verificationTitle");
+    const messageElement = document.getElementById("verificationMessage");
+
+    if (titleElement) titleElement.style.color = "";
+    if (messageElement) messageElement.style.color = "";
+
     const requiredFunctions = [
         "generateRandomBits",
         "generateRandomBases",
@@ -63,13 +93,12 @@ async function generateSecureKey() {
 
     for (const functionName of requiredFunctions) {
         if (typeof window[functionName] !== "function") {
-            const message =
-                `Missing function: ${functionName}. Check alice.js, bob.js and eve.js.`;
-
-            console.error(message);
-            updateText("statusText", message);
+            updateText("statusText", "A required simulation function is missing.");
             updateText("verificationTitle", "Simulation Error");
-            updateText("verificationMessage", message);
+            updateText(
+                "verificationMessage",
+                "Check that alice.js, bob.js and eve.js are loaded correctly."
+            );
             return;
         }
     }
@@ -79,38 +108,26 @@ async function generateSecureKey() {
         button.textContent = "SIMULATION IN PROGRESS...";
     }
 
-    resetProcessSteps();
-
-    updateText("statusText", "Initializing simulation...");
-    updateText("verificationTitle", "Verification Pending");
-    updateText(
-        "verificationMessage",
-        "Generating bits and simulating quantum communication."
-    );
-
     try {
-        // ---------------------------------------------
-        // STEP 1: Alice generates random bits and bases.
-        // ---------------------------------------------
+        // Step 1: Alice generates bits and bases.
         setStepState("stepGeneration", "active");
         updateText("statusText", "Generating random bits and bases...");
-
         await delay(400);
 
-        const aliceBits = generateRandomBits(NUM_BITS);
-        const aliceBases = generateRandomBases(NUM_BITS);
+        const numberOfBits =
+            typeof NUM_BITS === "number" ? NUM_BITS : 8;
 
-        updateText("bits", aliceBits.join(" "));
-        updateText("bases", aliceBases.join(" "));
+        const aliceBits = generateRandomBits(numberOfBits);
+        const aliceBases = generateRandomBases(numberOfBits);
+
+        updateText("bits", formatSequence(aliceBits));
+        updateText("bases", formatSequence(aliceBases));
 
         setStepState("stepGeneration", "completed");
 
-        // ---------------------------------------------
-        // STEP 2: Alice encodes quantum states.
-        // ---------------------------------------------
+        // Step 2: Alice encodes the bits as quantum states.
         setStepState("stepEncoding", "active");
         updateText("statusText", "Encoding quantum states...");
-
         await delay(400);
 
         const alicePhotons = encodePhoton(aliceBits, aliceBases);
@@ -123,64 +140,58 @@ async function generateSecureKey() {
             return photon.bit === 0 ? "|+⟩" : "|−⟩";
         });
 
-        updateText("photons", photonStates.join(" "));
-
+        updateText("photons", formatSequence(photonStates));
         setStepState("stepEncoding", "completed");
 
-        // ---------------------------------------------
-        // STEP 3: Eve intercepts and resends photons.
-        // ---------------------------------------------
+        // Step 3: Eve intercepts photons only if enabled.
         setStepState("stepMeasurement", "active");
-        updateText("statusText", "Eve is intercepting and measuring photons...");
-
+        updateText("statusText", "Processing photon transmission...");
         await delay(400);
 
-        const eveResult = interceptAndResend(alicePhotons);
-        const photonsSentToBob = eveResult.forwardedPhotons;
+        const eveToggle = document.getElementById("eveToggle");
+        const eveEnabled = eveToggle ? eveToggle.checked : false;
 
-        // ---------------------------------------------
-        // STEP 4: Bob measures forwarded photons.
-        // ---------------------------------------------
+        let eveResult;
+        let photonsSentToBob;
+
+        if (eveEnabled) {
+            eveResult = interceptAndResend(alicePhotons);
+            photonsSentToBob = eveResult.forwardedPhotons;
+        } else {
+            eveResult = { eveBases: [], eveBits: [] };
+            photonsSentToBob = alicePhotons;
+        }
+
+        // Step 4: Bob measures the received photons.
         updateText("statusText", "Bob is measuring the photons...");
 
-        const bobBases = generateRandomBases(NUM_BITS);
+        const bobBases = generateRandomBases(numberOfBits);
         const bobKey = [];
 
         for (let i = 0; i < photonsSentToBob.length; i++) {
-            bobKey.push(
-                measurePhoton(photonsSentToBob[i], bobBases[i])
-            );
+            bobKey.push(measurePhoton(photonsSentToBob[i], bobBases[i]));
         }
 
-        updateText("bobBases", bobBases.join(" "));
-        updateText("bobKey", bobKey.join(" "));
+        updateText("bobBases", formatSequence(bobBases));
+        updateText("bobKey", formatSequence(bobKey));
 
         await delay(400);
-
         setStepState("stepMeasurement", "completed");
 
-        // ---------------------------------------------
-        // STEP 5: Sift keys using matching bases.
-        // ---------------------------------------------
+        // Step 5: Keep only positions with matching bases.
         setStepState("stepSifting", "active");
         updateText("statusText", "Sifting keys using matching bases...");
-
         await delay(400);
 
         const matchingPositions = [];
 
-        for (let i = 0; i < NUM_BITS; i++) {
+        for (let i = 0; i < aliceBits.length; i++) {
             if (aliceBases[i] === bobBases[i]) {
                 matchingPositions.push(i);
             }
         }
 
-        const siftedAlice = siftKey(
-            aliceBits,
-            aliceBases,
-            bobBases
-        );
-
+        const siftedAlice = siftKey(aliceBits, aliceBases, bobBases);
         const siftedBob = matchingPositions.map(index => bobKey[index]);
 
         updateText(
@@ -190,30 +201,25 @@ async function generateSecureKey() {
                 : "None"
         );
 
-        updateText("siftedKey", siftedAlice.join(" "));
+        updateText("siftedKey", formatSequence(siftedAlice));
+        updateText("siftedKeyLength", siftedAlice.length);
 
         setStepState("stepSifting", "completed");
 
-        // ---------------------------------------------
-        // STEP 6: Sample sifted keys and calculate QBER.
-        // ---------------------------------------------
+        // Step 6: Estimate the error rate using compareKeys().
         setStepState("stepVerification", "active");
         updateText("statusText", "Sampling keys and estimating QBER...");
-
         await delay(400);
 
-        const verificationResult = compareKeys(
-            siftedAlice,
-            siftedBob,
-            0.5
-        );
+        const result = compareKeys(siftedAlice, siftedBob, 0.5);
 
         if (
-            !verificationResult ||
-            typeof verificationResult.sampledBits !== "number"
+            !result ||
+            typeof result.sampledBits !== "number" ||
+            typeof result.mismatches !== "number"
         ) {
             throw new Error(
-                "compareKeys() returned an unexpected result. Check bob.js."
+                "Unexpected verification result. Check compareKeys() in bob.js."
             );
         }
 
@@ -225,13 +231,8 @@ async function generateSecureKey() {
             message,
             remainingAliceKey,
             remainingBobKey
-        } = verificationResult;
+        } = result;
 
-        // ---------------------------------------------
-        // STEP 7: Display verification statistics.
-        // These IDs must also exist in index.html.
-        // ---------------------------------------------
-        updateText("siftedKeyLength", siftedAlice.length);
         updateText("sampleSize", sampledBits);
 
         updateText(
@@ -244,100 +245,104 @@ async function generateSecureKey() {
             qber === null ? "N/A" : `${qber.toFixed(2)}%`
         );
 
-        updateText(
-            "remainingKeyLength",
-            remainingAliceKey.length
-        );
+        const remainingA = Array.isArray(remainingAliceKey)
+            ? remainingAliceKey
+            : [];
 
-        // Log the simulation for debugging.
-        console.log("----- BB84 Simulation Results -----");
-        console.log("Alice's bits:", aliceBits);
-        console.log("Alice's bases:", aliceBases);
-        console.log("Eve's bases:", eveResult.eveBases);
-        console.log("Eve's measured bits:", eveResult.eveBits);
-        console.log("Bob's bases:", bobBases);
-        console.log("Bob's measured bits:", bobKey);
-        console.log("Alice's sifted key:", siftedAlice);
-        console.log("Bob's sifted key:", siftedBob);
+        const remainingB = Array.isArray(remainingBobKey)
+            ? remainingBobKey
+            : [];
 
-        console.log("----- QBER Verification -----");
-        console.log("Sifted key length:", siftedAlice.length);
-        console.log("Sample size:", sampledBits);
-        console.log("Mismatches:", mismatches);
-        console.log(
-            "Estimated QBER:",
-            qber === null ? "N/A" : `${qber.toFixed(2)}%`
-        );
-        console.log("Threshold:", `${threshold}%`);
-        console.log("Decision:", message);
-        console.log("Alice's remaining key:", remainingAliceKey);
-        console.log("Bob's remaining key:", remainingBobKey);
+        updateText("remainingKeyLength", remainingA.length);
 
-        // ---------------------------------------------
-        // STEP 8: Display verification decision.
-        // ---------------------------------------------
-        const titleElement = document.getElementById("verificationTitle");
-        const messageElement = document.getElementById("verificationMessage");
+        const keysMatch =
+            remainingA.length > 0 &&
+            remainingA.length === remainingB.length &&
+            remainingA.every((bit, index) => bit === remainingB[index]);
 
-        if (titleElement) titleElement.style.color = "";
-        if (messageElement) messageElement.style.color = "";
-
+        // Step 7: Decide whether the demonstration key can be used.
         if (qber === null || sampledBits === 0) {
             updateText("verificationTitle", "Insufficient Key Data");
-            updateText("verificationMessage", message);
             updateText(
-                "statusText",
-                "Simulation complete. No usable sample was available."
+                "verificationMessage",
+                message || "There is not enough data to estimate the error rate."
             );
-
+            updateText("statusText", "No usable verification sample was available.");
         } else if (sampledBits < 10) {
             updateText("verificationTitle", "Sample Too Small");
-            updateText("verificationMessage", message);
+            updateText(
+                "verificationMessage",
+                `${message || "The sample is too small for a meaningful estimate."} Only ${sampledBits} bits were sampled.`
+            );
             updateText(
                 "statusText",
-                `Sample QBER: ${qber.toFixed(1)}%. More data is needed for a meaningful estimate.`
+                "More bits are needed for a meaningful QBER estimate."
             );
-
-        } else if (qber > threshold) {
+        } else if (qber > threshold || !keysMatch) {
             updateText(
                 "verificationTitle",
                 "Possible Eavesdropping — Key Rejected"
             );
+            updateText(
+                "verificationMessage",
+                `${message || "The verification check failed."} QBER: ${qber.toFixed(1)}%.`
+            );
+            updateText(
+                "statusText",
+                "Key rejected. Run the simulation again."
+            );
 
             if (titleElement) titleElement.style.color = "red";
             if (messageElement) messageElement.style.color = "red";
+        } else {
+            updateText("verificationTitle", "Key Verified");
 
             updateText(
                 "verificationMessage",
-                `${message} QBER: ${qber.toFixed(1)}% (${mismatches}/${sampledBits} mismatches).`
+                `${message || "The sample passed the demonstration check."} QBER: ${qber.toFixed(1)}%. This simulation does not prove real-world security.`
             );
 
             updateText(
                 "statusText",
-                "Key rejected by the demonstration QBER check."
+                "The key passed the demonstration verification check."
             );
 
-        } else {
-            updateText("verificationTitle", "Sample Within Threshold");
+            // Connect successful BB84 verification to pharma.js.
+            window.verifiedBB84Key = remainingA.slice();
+            window.bb84KeyVerified = true;
+
+            window.dispatchEvent(new Event("bb84-key-updated"));
 
             if (titleElement) titleElement.style.color = "green";
             if (messageElement) messageElement.style.color = "green";
-
-            updateText(
-                "verificationMessage",
-                `${message} QBER: ${qber.toFixed(1)}% (${mismatches}/${sampledBits} mismatches). This does not prove the channel is secure.`
-            );
-
-            updateText(
-                "statusText",
-                "Sample error rate is within the illustrative threshold."
-            );
         }
+
+        console.log("BB84 simulation results:", {
+            aliceBits,
+            aliceBases,
+            eveBases: eveResult.eveBases,
+            eveBits: eveResult.eveBits,
+            bobBases,
+            bobKey,
+            siftedAlice,
+            siftedBob,
+            sampledBits,
+            mismatches,
+            qber,
+            threshold
+        });
 
         setStepState("stepVerification", "completed");
 
     } catch (error) {
         console.error("Simulation error:", error);
+
+        window.verifiedBB84Key = null;
+        window.bb84KeyVerified = false;
+
+        if (typeof window.resetPharmaForNewSimulation === "function") {
+            window.resetPharmaForNewSimulation();
+        }
 
         updateText("statusText", "Simulation failed. Check the browser console.");
         updateText("verificationTitle", "Simulation Error");
@@ -353,3 +358,12 @@ async function generateSecureKey() {
         }
     }
 }
+
+// Connect the Generate Key button.
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.getElementById("generateKeyButton");
+
+    if (button) {
+        button.addEventListener("click", generateSecureKey);
+    }
+});
