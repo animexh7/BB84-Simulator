@@ -1,9 +1,5 @@
+// Eve's BB84 Intercept-Resend Attack
 
-/* =====================================================
-   Eve.js — BB84 Intercept-Resend Attack
-   ===================================================== */
-
-// Eve independently chooses random measurement bases.
 function generateEveRandomBases(numberOfBits) {
     const bases = [];
 
@@ -14,18 +10,13 @@ function generateEveRandomBases(numberOfBits) {
     return bases;
 }
 
-
-// Eve intercepts and measures Alice's photons,
-// then prepares fresh photons to forward to Bob.
 function interceptAndResend(photons) {
-
-    // Step 1: Eve chooses her own random bases.
+    // Eve chooses random measurement bases
     const eveBases = generateEveRandomBases(photons.length);
 
-    // Step 2: Eve measures each intercepted photon.
-    // Reuse measurePhoton() from bob.js.
     const eveBits = [];
 
+    // Eve measures each photon
     for (let i = 0; i < photons.length; i++) {
         const measuredBit = measurePhoton(
             photons[i],
@@ -35,14 +26,12 @@ function interceptAndResend(photons) {
         eveBits.push(measuredBit);
     }
 
-    // Step 3: Eve encodes fresh photons using
-    // her measured bits and her chosen bases.
+    // Eve creates new photons and forwards them to Bob
     const forwardedPhotons = encodePhoton(
         eveBits,
         eveBases
     );
 
-    // Step 4: Forward Eve's photons to Bob.
     return {
         eveBases: eveBases,
         eveBits: eveBits,

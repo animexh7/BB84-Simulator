@@ -1,66 +1,66 @@
+// Bob's BB84 Functions
+
 function generateRandomBases(length) {
-    let bases = [];
+    const bases = [];
 
     for (let i = 0; i < length; i++) {
-        let randomNumber = Math.random();
-
-        if (randomNumber < 0.5) {
-            bases.push("Z");
-        } else {
-            bases.push("X");
-        }
+        bases.push(Math.random() < 0.5 ? "Z" : "X");
     }
 
     return bases;
 }
+
+// Measure a photon using Bob's selected basis
 function measurePhoton(photon, guessedBasis) {
     if (photon.basis === guessedBasis) {
         return photon.bit;
-    } else {
-        return Math.random() < 0.5 ? 0 : 1;
     }
+
+    return Math.random() < 0.5 ? 0 : 1;
 }
 
+// Compare Alice's and Bob's sifted keys
 function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
     if (aliceKey.length !== bobKey.length) {
         throw new Error("Alice's and Bob's keys must have equal lengths.");
     }
 
-    if (aliceKey.length === 0) {
+    const length = aliceKey.length;
+
+    if (length === 0) {
         return {
             sampledBits: 0,
             mismatches: 0,
             qber: null,
             threshold: 11,
             secureEnough: false,
-            message: "No sifted bits available for sampling.",
+            message: "No sifted bits available.",
             remainingAliceKey: [],
             remainingBobKey: []
         };
     }
 
-    // Randomly choose positions to reveal publicly.
+    // Shuffle the positions randomly
     const indices = Array.from(
-        { length: aliceKey.length },
+        { length: length },
         (_, i) => i
     );
 
-    // Shuffle the positions.
     for (let i = indices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [indices[i], indices[j]] = [indices[j], indices[i]];
+
+        [indices[i], indices[j]] =
+            [indices[j], indices[i]];
     }
 
-    // Choose a sample, leaving at least one bit when possible.
-    const sampleSize = aliceKey.length === 1
-        ? 1
-        : Math.min(
-            aliceKey.length - 1,
-            Math.max(1, Math.floor(aliceKey.length * sampleFraction))
-        );
+    // Keep at least one bit for the remaining key
+    const sampleSize = Math.min(
+        length - 1,
+        Math.floor(length * sampleFraction)
+    );
 
     const sampleIndices = indices.slice(0, sampleSize);
-    const revealedPositions = new Set(sampleIndices);
+    const sampledPositions = new Set(sampleIndices);
 
     let mismatches = 0;
 
@@ -70,53 +70,50 @@ function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
         }
     }
 
-    const qber = (mismatches / sampleSize) * 100;
+    const qber = sampleSize > 0
+        ? (mismatches / sampleSize) * 100
+        : null;
+
     const threshold = 11;
 
-    // Remove publicly revealed bits from the remaining key.
+    // Remove the publicly revealed sample bits
     const remainingAliceKey = aliceKey.filter(
-        (_, index) => !revealedPositions.has(index)
+        (_, index) => !sampledPositions.has(index)
     );
 
     const remainingBobKey = bobKey.filter(
-        (_, index) => !revealedPositions.has(index)
+        (_, index) => !sampledPositions.has(index)
     );
 
-    // A single bit is insufficient for meaningful security estimation.
+    // Require at least 10 sampled bits for this demonstration
     const enoughSampleData = sampleSize >= 10;
-    const secureEnough = enoughSampleData && qber <= threshold;
+
+    const secureEnough =
+        enoughSampleData &&
+        qber !== null &&
+        qber <= threshold;
 
     let message;
 
     if (!enoughSampleData) {
         message =
-            "Sample too small for a reliable security estimate. Demonstration only.";
+            "Sample too small for a reliable security estimate. Generate more bits.";
     } else if (qber > threshold) {
         message =
-            "QBER exceeds 11%. Reject the key in this simplified simulation.";
+            "QBER exceeds 11%. Reject the key in this simulation.";
     } else {
         message =
-            "Sample QBER is at or below 11%. Further security checks are still required.";
+            "Sample QBER is at or below 11%. This does not prove real-world security.";
     }
 
-    const result = {
+    return {
         sampledBits: sampleSize,
-        mismatches,
-        qber,
-        threshold,
-        secureEnough,
-        message,
-        remainingAliceKey,
-        remainingBobKey
+        mismatches: mismatches,
+        qber: qber,
+        threshold: threshold,
+        secureEnough: secureEnough,
+        message: message,
+        remainingAliceKey: remainingAliceKey,
+        remainingBobKey: remainingBobKey
     };
-
-    console.log("Sampled bits:", sampleSize);
-    console.log("Mismatches:", mismatches);
-    console.log("Estimated QBER:", qber.toFixed(2) + "%");
-    console.log("Threshold:", threshold + "%");
-    console.log("Decision:", message);
-    console.log("Alice's remaining key:", remainingAliceKey);
-    console.log("Bob's remaining key:", remainingBobKey);
-
-    return result;
 }

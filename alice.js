@@ -1,7 +1,7 @@
-// Day 3 - Alice's BB84 Functions
+// Alice's BB84 Functions
 
-const NUM_BITS = 8;
-
+const NUM_BITS = 128;
+window.NUM_BITS = NUM_BITS;
 
 // Generate random bits: 0 or 1
 function generateRandomBits(numberOfBits) {
@@ -14,7 +14,6 @@ function generateRandomBits(numberOfBits) {
     return bits;
 }
 
-
 // Generate random bases: Z or X
 function generateRandomBases(numberOfBits) {
     const bases = [];
@@ -26,8 +25,7 @@ function generateRandomBases(numberOfBits) {
     return bases;
 }
 
-
-// Encode each bit using the selected basis
+// Encode bits as quantum states
 function encodePhoton(bits, bases) {
     const photons = [];
 
@@ -41,9 +39,7 @@ function encodePhoton(bits, bases) {
     return photons;
 }
 
-
-// Sift the key by keeping only positions
-// where Alice and Bob used the same basis
+// Keep bits where Alice and Bob used the same basis
 function siftKey(bits, aliceBases, bobBases) {
     const siftedKey = [];
 
