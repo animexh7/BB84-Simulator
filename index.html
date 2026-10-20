@@ -1,367 +1,148 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Quantum Key Distribution Simulator</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-        /* Base layout — works even if the existing CSS differs */
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-        header, footer {
-            padding: 22px;
-            text-align: center;
-            background: #10213b;
-            color: white;
-        }
-
-        main {
-            max-width: 1100px;
-            margin: auto;
-            padding: 24px;
-        }
-
-        .panel {
-            background: white;
-            border: 1px solid #dce3ee;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 18px 0;
-            box-shadow: 0 3px 12px #10213b0b;
-        }
-
-        .panel h2 {
-            margin-top: 0;
-            color: #183b68;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 16px;
-        }
-
-        .data {
-            padding: 12px;
-            background: #f2f6fc;
-            border-radius: 8px;
-            overflow-wrap: anywhere;
-            min-height: 24px;
-            font-family: monospace;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-        }
-
-        .step {
-            padding: 14px;
-            border: 1px solid #dce3ee;
-            border-radius: 9px;
-            background: #f8fafc;
-        }
-
-        .step.active {
-            border-color: #2875df;
-            background: #eaf2ff;
-        }
-
-        .step.completed {
-            border-color: #21865b;
-            background: #eaf8f0;
-        }
-
-        button {
-            display: block;
-            margin: 24px auto;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 8px;
-            background: #1769d2;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1054ae;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: wait;
-        }
-
-        #statusText {
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .note {
-            color: #53627a;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        footer {
-            font-size: 13px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Key Distribution Simulator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <header class="site-header">
+    <h1>Quantum Key Distribution Simulator</h1>
+    <p>BB84 Protocol · Secure Communication Demonstration</p>
+  </header>
 
-    <header>
-        <h1>Quantum Key Distribution Simulator</h1>
-        <p>BB84 Protocol · Secure Communication Demonstration</p>
-    </header>
+  <main class="container">
+    <section class="panel">
+      <h2>System Status</h2>
+      <p id="statusText" role="status" aria-live="polite">Ready to initialize the simulation.</p>
+    </section>
 
-    <main>
+    <section class="panel">
+      <h2>Simulation Process</h2>
+      <div class="steps">
+        <div class="step" id="stepGeneration"><strong>Step 1</strong><p>Bit Generation</p></div>
+        <div class="step" id="stepEncoding"><strong>Step 2</strong><p>Quantum Encoding</p></div>
+        <div class="step" id="stepMeasurement"><strong>Step 3</strong><p>Interception and Measurement</p></div>
+        <div class="step" id="stepSifting"><strong>Step 4</strong><p>Key Sifting</p></div>
+        <div class="step" id="stepVerification"><strong>Step 5</strong><p>Key Verification</p></div>
+      </div>
+    </section>
 
-        <!-- SYSTEM STATUS -->
-        <section class="panel">
-            <h2>System Status</h2>
-            <p id="statusText" role="status" aria-live="polite">
-                Ready to initialize the simulation.
-            </p>
-        </section>
+    <!-- DAY 4: ALICE ANIMATION PANEL -->
+    <section class="panel alice-animation-panel">
+      <h2>Alice's Quantum Laboratory</h2>
+      <p class="note">Watch Alice generate random bits, select preparation bases, encode quantum states, and send photons to Bob.</p>
+      <div class="alice-animation-grid">
+        <div class="alice-stage">
+          <h3>1. Random Bits</h3>
+          <div id="animatedBits" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+        </div>
+        <div class="alice-stage">
+          <h3>2. Preparation Bases</h3>
+          <div id="animatedBases" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+        </div>
+        <div class="alice-stage">
+          <h3>3. Encoded Photons</h3>
+          <div id="animatedPhotons" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+        </div>
+      </div>
+      <div class="quantum-channel" aria-label="Photon transmission from Alice to Bob">
+        <div class="quantum-person alice-person">
+          <span class="person-icon" aria-hidden="true">A</span><strong>Alice</strong>
+        </div>
+        <div class="photon-track">
+          <div class="channel-label" id="photonStatus">Waiting to transmit photons</div>
+          <div class="photon-rail"><span class="photon" id="travellingPhoton" aria-hidden="true">✦</span></div>
+        </div>
+        <div class="quantum-person bob-person">
+          <span class="person-icon" aria-hidden="true">B</span><strong>Bob</strong>
+        </div>
+      </div>
+      <p class="note animation-caption" id="aliceAnimationStatus" aria-live="polite">Generate a secure key to start the animation.</p>
+    </section>
 
-        <!-- PROCESS TRACKER -->
-        <section class="panel">
-            <h2>Simulation Process</h2>
+    <section class="panel">
+      <h2>1. Bit Generation</h2>
+      <div class="grid">
+        <div><h3>Generated Bits</h3><div class="data" id="bits">—</div></div>
+        <div><h3>Preparation Bases</h3><div class="data" id="bases">—</div></div>
+      </div>
+    </section>
 
-            <div class="steps">
-                <div class="step" id="stepGeneration">
-                    <strong>Step 1</strong>
-                    <p>Bit Generation</p>
-                </div>
+    <section class="panel">
+      <h2>2. Quantum State Encoding</h2>
+      <p class="note">Bits are represented using the Z basis (|0⟩, |1⟩) or the X basis (|+⟩, |−⟩).</p>
+      <h3>Encoded States</h3><div class="data" id="photons">—</div>
+    </section>
 
-                <div class="step" id="stepEncoding">
-                    <strong>Step 2</strong>
-                    <p>Quantum Encoding</p>
-                </div>
+    <section class="panel">
+      <h2>3. Receiver Measurement</h2>
+      <div class="grid">
+        <div><h3>Measurement Bases</h3><div class="data" id="bobBases">—</div></div>
+        <div><h3>Measured Bits</h3><div class="data" id="bobKey">—</div></div>
+      </div>
+    </section>
 
-                <div class="step" id="stepMeasurement">
-                    <strong>Step 3</strong>
-                    <p>Interception and Measurement</p>
-                </div>
+    <section class="panel">
+      <h2>4. Key Sifting</h2>
+      <p class="note">Only positions where the preparation and measurement bases match are retained.</p>
+      <div class="grid">
+        <div><h3>Matching Positions</h3><div class="data" id="matchingPositions">—</div></div>
+        <div><h3>Sifted Key</h3><div class="data" id="siftedKey">—</div></div>
+      </div>
+    </section>
 
-                <div class="step" id="stepSifting">
-                    <strong>Step 4</strong>
-                    <p>Key Sifting</p>
-                </div>
+    <section class="panel">
+      <h2>5. Key Verification</h2>
+      <div class="grid verification-grid">
+        <div><h3>Sifted Key Length</h3><div class="data" id="siftedKeyLength">—</div></div>
+        <div><h3>Sample Size</h3><div class="data" id="sampleSize">—</div></div>
+        <div><h3>Sample Matches</h3><div class="data" id="matchingBits">—</div></div>
+        <div><h3>Estimated QBER</h3><div class="data" id="qberValue">—</div></div>
+        <div><h3>Remaining Key Length</h3><div class="data" id="remainingKeyLength">—</div></div>
+      </div>
+      <h3 id="verificationTitle">Verification pending</h3>
+      <p id="verificationMessage" aria-live="polite">Generate a key to begin verification.</p>
+    </section>
 
-                <div class="step" id="stepVerification">
-                    <strong>Step 5</strong>
-                    <p>Key Verification</p>
-                </div>
-            </div>
-        </section>
+    <section class="panel">
+      <h2>Eavesdropping Simulation</h2>
+      <label class="toggle-label"><input type="checkbox" id="eveToggle"> Simulate Eavesdropping (Eve)</label>
+      <p class="note">Turn this on to simulate Eve intercepting and resending photons.</p>
+    </section>
 
-        <!-- ALICE'S DATA -->
-        <section class="panel">
-            <h2>1. Bit Generation</h2>
+    <div class="action-area">
+      <button id="generateKeyButton" class="primary-button" type="button" onclick="generateSecureKey()">GENERATE SECURE KEY</button>
+    </div>
+    <p class="note educational-note">Educational simulation only. This project models the BB84 protocol in JavaScript; it does not use real quantum hardware. Key agreement alone does not establish security.</p>
 
-            <div class="grid">
-                <div>
-                    <h3>Generated Bits</h3>
-                    <div class="data" id="bits">—</div>
-                </div>
+    <section class="panel">
+      <h2>Pharmaceutical Data Security</h2>
+      <p>Enter pharmaceutical formulation data to prepare it for secure transmission.</p>
+      <label for="pharmaData">Formulation Data:</label>
+      <textarea id="pharmaData" placeholder="Enter pharmaceutical formulation details..." rows="4"></textarea>
+      <div class="pharma-actions">
+        <button id="encryptBtn" type="button">Encrypt Data</button>
+        <button id="decryptBtn" type="button" disabled>Decrypt Data</button>
+      </div>
+      <h3>Encrypted Data</h3><div class="data" id="encryptedData">No data encrypted yet.</div>
+      <h3>Decrypted Data</h3><div class="data" id="decryptedData">No data decrypted yet.</div>
+      <p id="pharmaStatus" class="pharma-status" aria-live="polite">Waiting for input.</p>
+    </section>
+  </main>
 
-                <div>
-                    <h3>Preparation Bases</h3>
-                    <div class="data" id="bases">—</div>
-                </div>
-            </div>
-        </section>
+  <footer class="site-footer">
+    <p>BB84 Quantum Key Distribution Simulator</p>
+    <p>Educational Cybersecurity Project</p>
+  </footer>
 
-        <!-- ENCODING -->
-        <section class="panel">
-            <h2>2. Quantum State Encoding</h2>
-
-            <p class="note">
-                Bits are represented using the Z basis (|0⟩, |1⟩)
-                or the X basis (|+⟩, |−⟩).
-            </p>
-
-            <h3>Encoded States</h3>
-            <div class="data" id="photons">—</div>
-        </section>
-
-        <!-- BOB'S DATA -->
-        <section class="panel">
-            <h2>3. Receiver Measurement</h2>
-
-            <div class="grid">
-                <div>
-                    <h3>Measurement Bases</h3>
-                    <div class="data" id="bobBases">—</div>
-                </div>
-
-                <div>
-                    <h3>Measured Bits</h3>
-                    <div class="data" id="bobKey">—</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- KEY SIFTING -->
-        <section class="panel">
-            <h2>4. Key Sifting</h2>
-
-            <p class="note">
-                Only positions where the preparation and measurement
-                bases match are retained.
-            </p>
-
-            <div class="grid">
-                <div>
-                    <h3>Matching Positions</h3>
-                    <div class="data" id="matchingPositions">—</div>
-                </div>
-
-                <div>
-                    <h3>Sifted Key</h3>
-                    <div class="data" id="siftedKey">—</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- VERIFICATION -->
-        <section class="panel">
-            <h2>5. Key Verification</h2>
-
-            <div class="grid">
-                
-<div>
-    <h3>Sifted Key Length</h3>
-    <div class="data" id="siftedKeyLength">—</div>
-</div>
-
-<div>
-    <h3>Sample Size</h3>
-    <div class="data" id="sampleSize">—</div>
-</div>
-
-<div>
-    <h3>Sample Matches</h3>
-    <div class="data" id="matchingBits">—</div>
-</div>
-
-<div>
-    <h3>Estimated QBER</h3>
-    <div class="data" id="qberValue">—</div>
-</div>
-
-<div>
-    <h3>Remaining Key Length</h3>
-    <div class="data" id="remainingKeyLength">—</div>
-</div>
-
-            </div>
-
-            <h3 id="verificationTitle">Verification pending</h3>
-
-            <p id="verificationMessage" aria-live="polite">
-                Generate a key to begin verification.
-            </p>
-        </section>
-
-        <!-- EAVESDROPPING TOGGLE -->
-        <section class="panel">
-            <h2>Eavesdropping Simulation</h2>
-
-            <label>
-                <input type="checkbox" id="eveToggle">
-                Simulate Eavesdropping (Eve)
-            </label>
-
-            <p class="note">
-                Turn this on to simulate Eve intercepting and resending photons.
-            </p>
-        </section>
-
-        <!-- GENERATE BUTTON -->
-        <button
-            id="generateKeyButton"
-            type="button"
-            onclick="generateSecureKey()"
-        >
-            GENERATE SECURE KEY
-        </button>
-
-        <p class="note">
-            Educational simulation only. This project models the BB84
-            protocol in JavaScript; it does not use real quantum hardware.
-            Key agreement alone does not establish security.
-        </p>
-
-        <!-- PHARMACEUTICAL DATA ENCRYPTION -->
-        <section class="panel">
-            <h2>Pharmaceutical Data Security</h2>
-
-            <p>
-                Enter pharmaceutical formulation data to prepare it
-                for secure transmission.
-            </p>
-
-            <label for="pharmaData">Formulation Data:</label>
-
-            <textarea
-                id="pharmaData"
-                placeholder="Enter pharmaceutical formulation details..."
-                rows="4"
-                style="width: 100%; margin-top: 10px;"
-            ></textarea>
-
-            <button id="encryptBtn" type="button">
-                Encrypt Data
-            </button>
-
-            <button id="decryptBtn" type="button" disabled>
-                Decrypt Data
-            </button>
-
-            <h3>Encrypted Data</h3>
-            <div class="data" id="encryptedData">
-                No data encrypted yet.
-            </div>
-
-            <h3>Decrypted Data</h3>
-            <div class="data" id="decryptedData">
-                No data decrypted yet.
-            </div>
-
-            <p id="pharmaStatus">Waiting for input.</p>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>BB84 Quantum Key Distribution Simulator</p>
-        <p>Educational Cybersecurity Project</p>
-    </footer>
-
-    <!-- Load dependencies before the main simulation script -->
-    <script src="alice.js"></script>
-    <script src="bob.js"></script>
-    <script src="eve.js"></script>
-    <script src="script.js"></script>
-    <script src="aes.js"></script>
-    <script src="pharma.js"></script>
-
+  <script src="alice.js"></script>
+  <script src="bob.js"></script>
+  <script src="eve.js"></script>
+  <script src="script.js"></script>
+  <script src="aes.js"></script>
+  <script src="pharma.js"></script>
 </body>
 </html>
+
