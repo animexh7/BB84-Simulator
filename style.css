@@ -104,3 +104,79 @@ textarea:focus { outline: 2px solid #9fc5fa; border-color: var(--blue); }
     animation-iteration-count: 1 !important; transition-duration: .01ms !important;
   }
 }
+
+.pharma-actions {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+.pharma-actions button {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 140px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1769d2;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pharma-actions button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+#pharmaData {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.pharma-actions {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+.pharma-actions button {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 140px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1769d2;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pharma-actions button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+#pharmaData {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}

@@ -1,6 +1,9 @@
-// Bob's BB84 Functions
 
 function generateRandomBases(length) {
+    if (!Number.isInteger(length) || length < 0) {
+        throw new Error("Length must be a non-negative integer.");
+    }
+
     const bases = [];
 
     for (let i = 0; i < length; i++) {
@@ -10,29 +13,62 @@ function generateRandomBases(length) {
     return bases;
 }
 
-// Measure a photon using Bob's selected basis
 function measurePhoton(photon, guessedBasis) {
+    if (
+        !photon ||
+        (photon.bit !== 0 && photon.bit !== 1) ||
+        (photon.basis !== "Z" && photon.basis !== "X")
+    ) {
+        throw new Error("Invalid photon. Check its bit and basis.");
+    }
+
+    if (guessedBasis !== "Z" && guessedBasis !== "X") {
+        throw new Error("Basis must be Z or X.");
+    }
+
     if (photon.basis === guessedBasis) {
         return photon.bit;
     }
 
+    // Different bases produce a random measurement result.
     return Math.random() < 0.5 ? 0 : 1;
 }
 
-// Compare Alice's and Bob's sifted keys
 function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
+    if (!Array.isArray(aliceKey) || !Array.isArray(bobKey)) {
+        throw new Error("Keys must be arrays.");
+    }
+
     if (aliceKey.length !== bobKey.length) {
-        throw new Error("Alice's and Bob's keys must have equal lengths.");
+        throw new Error("Key lengths must match.");
+    }
+
+    // Validate that every key element is a binary bit.
+    if (
+        !aliceKey.every(bit => bit === 0 || bit === 1) ||
+        !bobKey.every(bit => bit === 0 || bit === 1)
+    ) {
+        throw new Error("Keys must contain only 0s and 1s.");
+    }
+
+    if (
+        typeof sampleFraction !== "number" ||
+        !Number.isFinite(sampleFraction) ||
+        sampleFraction < 0 ||
+        sampleFraction > 1
+    ) {
+        throw new Error("Sample fraction must be between 0 and 1.");
     }
 
     const length = aliceKey.length;
+    const threshold = 11;
 
     if (length === 0) {
         return {
             sampledBits: 0,
             mismatches: 0,
             qber: null,
-            threshold: 11,
+            threshold,
             secureEnough: false,
             message: "No sifted bits available.",
             remainingAliceKey: [],
@@ -40,24 +76,18 @@ function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
         };
     }
 
-    // Shuffle the positions randomly
-    const indices = Array.from(
-        { length: length },
-        (_, i) => i
-    );
+    // Randomly select positions for key comparison.
+    const indices = Array.from({ length }, (_, i) => i);
 
     for (let i = indices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-
-        [indices[i], indices[j]] =
-            [indices[j], indices[i]];
+        [indices[i], indices[j]] = [indices[j], indices[i]];
     }
 
-    // Keep at least one bit for the remaining key
-    const sampleSize = Math.min(
-        length - 1,
-        Math.floor(length * sampleFraction)
-    );
+    // Keep at least one bit for the remaining key.
+    const maxSampleSize = Math.max(0, length - 1);
+    const requestedSampleSize = Math.floor(length * sampleFraction);
+    const sampleSize = Math.min(requestedSampleSize, maxSampleSize);
 
     const sampleIndices = indices.slice(0, sampleSize);
     const sampledPositions = new Set(sampleIndices);
@@ -70,13 +100,9 @@ function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
         }
     }
 
-    const qber = sampleSize > 0
-        ? (mismatches / sampleSize) * 100
-        : null;
+    const qber =
+        sampleSize > 0 ? (mismatches / sampleSize) * 100 : null;
 
-    const threshold = 11;
-
-    // Remove the publicly revealed sample bits
     const remainingAliceKey = aliceKey.filter(
         (_, index) => !sampledPositions.has(index)
     );
@@ -85,35 +111,43 @@ function compareKeys(aliceKey, bobKey, sampleFraction = 0.5) {
         (_, index) => !sampledPositions.has(index)
     );
 
-    // Require at least 10 sampled bits for this demonstration
     const enoughSampleData = sampleSize >= 10;
+    const hasRemainingKey = remainingAliceKey.length > 0;
+    const keysMatch = remainingAliceKey.every(
+        (bit, index) => bit === remainingBobKey[index]
+    );
 
     const secureEnough =
         enoughSampleData &&
+        hasRemainingKey &&
         qber !== null &&
-        qber <= threshold;
+        qber <= threshold &&
+        keysMatch;
 
     let message;
 
-    if (!enoughSampleData) {
-        message =
-            "Sample too small for a reliable security estimate. Generate more bits.";
+    if (length === 1) {
+        message = "Insufficient key bits for comparison.";
+    } else if (!enoughSampleData) {
+        message = "Sample too small to verify security.";
+    } else if (!hasRemainingKey) {
+        message = "No key bits remain after sampling.";
     } else if (qber > threshold) {
-        message =
-            "QBER exceeds 11%. Reject the key in this simulation.";
+        message = "Possible eavesdropping detected. Key rejected.";
+    } else if (!keysMatch) {
+        message = "Remaining keys do not match. Key rejected.";
     } else {
-        message =
-            "Sample QBER is at or below 11%. This does not prove real-world security.";
+        message = "Low QBER detected. Further security checks are required.";
     }
 
     return {
         sampledBits: sampleSize,
-        mismatches: mismatches,
-        qber: qber,
-        threshold: threshold,
-        secureEnough: secureEnough,
-        message: message,
-        remainingAliceKey: remainingAliceKey,
-        remainingBobKey: remainingBobKey
+        mismatches,
+        qber,
+        threshold,
+        secureEnough,
+        message,
+        remainingAliceKey,
+        remainingBobKey
     };
 }
