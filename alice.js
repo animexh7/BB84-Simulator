@@ -1,6 +1,7 @@
-// Alice's BB84 Functions
 
-const NUM_BITS = 128;
+/* Alice's BB84 Functions */
+
+const NUM_BITS = 2048;
 window.NUM_BITS = NUM_BITS;
 
 // Generate random bits: 0 or 1

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,9 @@
   <main class="container">
     <section class="panel">
       <h2>System Status</h2>
-      <p id="statusText" role="status" aria-live="polite">Ready to initialize the simulation.</p>
+      <p id="statusText" role="status" aria-live="polite">
+        Ready to initialize the simulation.
+      </p>
     </section>
 
     <section class="panel">
@@ -29,106 +32,276 @@
       </div>
     </section>
 
-    <!-- DAY 4: ALICE ANIMATION PANEL -->
+    <!-- Alice's animation panel -->
     <section class="panel alice-animation-panel">
       <h2>Alice's Quantum Laboratory</h2>
-      <p class="note">Watch Alice generate random bits, select preparation bases, encode quantum states, and send photons to Bob.</p>
+      <p class="note">
+        Alice generates random bits, selects preparation bases,
+        encodes quantum states and sends photons to Bob.
+      </p>
+
       <div class="alice-animation-grid">
         <div class="alice-stage">
           <h3>1. Random Bits</h3>
-          <div id="animatedBits" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+          <div id="animatedBits" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
         </div>
+
         <div class="alice-stage">
           <h3>2. Preparation Bases</h3>
-          <div id="animatedBases" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+          <div id="animatedBases" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
         </div>
+
         <div class="alice-stage">
           <h3>3. Encoded Photons</h3>
-          <div id="animatedPhotons" class="bit-strip" aria-live="polite"><span class="animation-placeholder">Waiting...</span></div>
+          <div id="animatedPhotons" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
         </div>
       </div>
+
       <div class="quantum-channel" aria-label="Photon transmission from Alice to Bob">
         <div class="quantum-person alice-person">
-          <span class="person-icon" aria-hidden="true">A</span><strong>Alice</strong>
+          <span class="person-icon" aria-hidden="true">A</span>
+          <strong>Alice</strong>
         </div>
+
         <div class="photon-track">
-          <div class="channel-label" id="photonStatus">Waiting to transmit photons</div>
-          <div class="photon-rail"><span class="photon" id="travellingPhoton" aria-hidden="true">✦</span></div>
+          <div class="channel-label" id="photonStatus">
+            Waiting to transmit photons
+          </div>
+          <div class="photon-rail">
+            <span class="photon" id="travellingPhoton" aria-hidden="true">✦</span>
+          </div>
         </div>
+
         <div class="quantum-person bob-person">
-          <span class="person-icon" aria-hidden="true">B</span><strong>Bob</strong>
+          <span class="person-icon" aria-hidden="true">B</span>
+          <strong>Bob</strong>
         </div>
       </div>
-      <p class="note animation-caption" id="aliceAnimationStatus" aria-live="polite">Generate a secure key to start the animation.</p>
+
+      <p class="note animation-caption" id="aliceAnimationStatus" aria-live="polite">
+        Generate a secure key to start the animation.
+      </p>
+    </section>
+
+    <!-- Bob's animation panel: your Day 4 UI task -->
+    <section class="panel bob-animation-panel">
+      <h2>Bob's Quantum Laboratory</h2>
+      <p class="note">
+        Bob independently selects measurement bases and measures
+        the incoming quantum states.
+      </p>
+
+      <div class="alice-animation-grid">
+        <div class="alice-stage">
+          <h3>1. Incoming Photons</h3>
+          <div id="bobAnimatedPhotons" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
+        </div>
+
+        <div class="alice-stage">
+          <h3>2. Measurement Bases</h3>
+          <div id="bobAnimatedBases" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
+        </div>
+
+        <div class="alice-stage">
+          <h3>3. Measured Bits</h3>
+          <div id="bobAnimatedBits" class="bit-strip" aria-live="polite">
+            <span class="animation-placeholder">Waiting...</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="note animation-caption" id="bobAnimationStatus" aria-live="polite">
+        Waiting for photons from Alice.
+      </p>
     </section>
 
     <section class="panel">
       <h2>1. Bit Generation</h2>
       <div class="grid">
-        <div><h3>Generated Bits</h3><div class="data" id="bits">—</div></div>
-        <div><h3>Preparation Bases</h3><div class="data" id="bases">—</div></div>
+        <div>
+          <h3>Generated Bits</h3>
+          <div class="data" id="bits">—</div>
+        </div>
+        <div>
+          <h3>Preparation Bases</h3>
+          <div class="data" id="bases">—</div>
+        </div>
       </div>
     </section>
 
     <section class="panel">
       <h2>2. Quantum State Encoding</h2>
-      <p class="note">Bits are represented using the Z basis (|0⟩, |1⟩) or the X basis (|+⟩, |−⟩).</p>
-      <h3>Encoded States</h3><div class="data" id="photons">—</div>
+      <p class="note">
+        Bits are represented using the Z basis (|0⟩, |1⟩)
+        or the X basis (|+⟩, |−⟩).
+      </p>
+      <h3>Encoded States</h3>
+      <div class="data" id="photons">—</div>
     </section>
 
     <section class="panel">
       <h2>3. Receiver Measurement</h2>
       <div class="grid">
-        <div><h3>Measurement Bases</h3><div class="data" id="bobBases">—</div></div>
-        <div><h3>Measured Bits</h3><div class="data" id="bobKey">—</div></div>
+        <div>
+          <h3>Measurement Bases</h3>
+          <div class="data" id="bobBases">—</div>
+        </div>
+        <div>
+          <h3>Measured Bits</h3>
+          <div class="data" id="bobKey">—</div>
+        </div>
       </div>
     </section>
 
     <section class="panel">
       <h2>4. Key Sifting</h2>
-      <p class="note">Only positions where the preparation and measurement bases match are retained.</p>
+      <p class="note">
+        Only positions where the preparation and measurement bases match are retained.
+      </p>
       <div class="grid">
-        <div><h3>Matching Positions</h3><div class="data" id="matchingPositions">—</div></div>
-        <div><h3>Sifted Key</h3><div class="data" id="siftedKey">—</div></div>
+        <div>
+          <h3>Matching Positions</h3>
+          <div class="data" id="matchingPositions">—</div>
+        </div>
+        <div>
+          <h3>Sifted Key</h3>
+          <div class="data" id="siftedKey">—</div>
+        </div>
       </div>
     </section>
 
     <section class="panel">
       <h2>5. Key Verification</h2>
+
       <div class="grid verification-grid">
-        <div><h3>Sifted Key Length</h3><div class="data" id="siftedKeyLength">—</div></div>
-        <div><h3>Sample Size</h3><div class="data" id="sampleSize">—</div></div>
-        <div><h3>Sample Matches</h3><div class="data" id="matchingBits">—</div></div>
-        <div><h3>Estimated QBER</h3><div class="data" id="qberValue">—</div></div>
-        <div><h3>Remaining Key Length</h3><div class="data" id="remainingKeyLength">—</div></div>
+        <div>
+          <h3>Sifted Key Length</h3>
+          <div class="data" id="siftedKeyLength">—</div>
+        </div>
+        <div>
+          <h3>Sample Size</h3>
+          <div class="data" id="sampleSize">—</div>
+        </div>
+        <div>
+          <h3>Sample Matches</h3>
+          <div class="data" id="matchingBits">—</div>
+        </div>
+        <div>
+          <h3>Estimated QBER</h3>
+          <div class="data" id="qberValue">—</div>
+        </div>
+        <div>
+          <h3>Remaining Key Length</h3>
+          <div class="data" id="remainingKeyLength">—</div>
+        </div>
       </div>
+
+      <div class="qber-panel">
+        <div class="qber-heading">
+          <strong>Quantum Bit Error Rate (QBER)</strong>
+          <span id="qberIndicatorLabel">Waiting for results</span>
+        </div>
+        <div
+          class="qber-track"
+          id="qberTrack"
+          role="progressbar"
+          aria-label="Quantum bit error rate"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="qberBarFill" class="qber-fill"></div>
+        </div>
+        <p class="note">
+          This demonstration uses an 11% threshold. A low sample error rate
+          does not prove real-world security.
+        </p>
+      </div>
+
       <h3 id="verificationTitle">Verification pending</h3>
-      <p id="verificationMessage" aria-live="polite">Generate a key to begin verification.</p>
+      <p id="verificationMessage" aria-live="polite">
+        Generate a key to begin verification.
+      </p>
     </section>
 
     <section class="panel">
       <h2>Eavesdropping Simulation</h2>
-      <label class="toggle-label"><input type="checkbox" id="eveToggle"> Simulate Eavesdropping (Eve)</label>
-      <p class="note">Turn this on to simulate Eve intercepting and resending photons.</p>
+      <label class="toggle-label">
+        <input type="checkbox" id="eveToggle">
+        Simulate Eavesdropping (Eve)
+      </label>
+      <p class="note">
+        Turn this on to simulate Eve intercepting and resending photons.
+      </p>
+    </section>
+
+    <!-- Separate UI test; does not alter the actual BB84 calculation -->
+    <section class="panel ui-test-panel">
+      <h2>Verification UI Test</h2>
+      <p class="note">
+        Preview the rejected-key screen with a displayed 100% mismatch.
+        This is a UI test, not a real simulation result.
+      </p>
+      <div class="test-actions">
+        <button id="previewMismatchButton" type="button">
+          Preview 100% Mismatch
+        </button>
+        <button id="clearMismatchPreviewButton" type="button" disabled>
+          Restore Actual Results
+        </button>
+      </div>
+      <p class="note" id="uiTestStatus" aria-live="polite">
+        UI test inactive.
+      </p>
     </section>
 
     <div class="action-area">
-      <button id="generateKeyButton" class="primary-button" type="button" onclick="generateSecureKey()">GENERATE SECURE KEY</button>
+      <button id="generateKeyButton" class="primary-button" type="button">
+        GENERATE SECURE KEY
+      </button>
     </div>
-    <p class="note educational-note">Educational simulation only. This project models the BB84 protocol in JavaScript; it does not use real quantum hardware. Key agreement alone does not establish security.</p>
+
+    <p class="note educational-note">
+      Educational simulation only. This project models BB84 in JavaScript;
+      it does not use real quantum hardware. Key agreement alone does not
+      establish security.
+    </p>
 
     <section class="panel">
       <h2>Pharmaceutical Data Security</h2>
       <p>Enter pharmaceutical formulation data to prepare it for secure transmission.</p>
+
       <label for="pharmaData">Formulation Data:</label>
-      <textarea id="pharmaData" placeholder="Enter pharmaceutical formulation details..." rows="4"></textarea>
+      <textarea
+        id="pharmaData"
+        placeholder="Enter pharmaceutical formulation details..."
+        rows="4"
+      ></textarea>
+
       <div class="pharma-actions">
         <button id="encryptBtn" type="button">Encrypt Data</button>
         <button id="decryptBtn" type="button" disabled>Decrypt Data</button>
       </div>
-      <h3>Encrypted Data</h3><div class="data" id="encryptedData">No data encrypted yet.</div>
-      <h3>Decrypted Data</h3><div class="data" id="decryptedData">No data decrypted yet.</div>
-      <p id="pharmaStatus" class="pharma-status" aria-live="polite">Waiting for input.</p>
+
+      <h3>Encrypted Data</h3>
+      <div class="data" id="encryptedData">No data encrypted yet.</div>
+
+      <h3>Decrypted Data</h3>
+      <div class="data" id="decryptedData">No data decrypted yet.</div>
+
+      <p id="pharmaStatus" class="pharma-status" aria-live="polite">
+        Waiting for input.
+      </p>
     </section>
   </main>
 
@@ -145,4 +318,3 @@
   <script src="pharma.js"></script>
 </body>
 </html>
-
