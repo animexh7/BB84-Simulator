@@ -41,3 +41,68 @@ After the application accepts a demonstration key, `pharma.js` derives an AES ke
 **4. Security scope**
 
 This is an educational, software-based BB84 simulation. It does not use real quantum hardware and does not implement every requirement of a production QKD system, such as a complete security proof, privacy amplification, authenticated classical communication, and a production-grade key-management protocol. A low QBER and matching remaining keys in this demonstration should not be interpreted as proof of real-world security.
+
+
+## How to Run the Project
+
+### Prerequisites
+- A computer with Visual Studio Code installed.
+- A web browser such as Google Chrome.
+- The Live Server extension in Visual Studio Code (recommended).
+
+### Steps to Run
+
+**1. Download the project**
+
+- Open the BB84-Simulator repository on GitHub.
+- Click the green **Code** button.
+- Select **Download ZIP**.
+- Extract the downloaded ZIP file to a folder on your computer.
+
+**2. Open the project in Visual Studio Code**
+
+- Open Visual Studio Code.
+- Select **File → Open Folder**.
+- Choose the extracted `BB84-Simulator` project folder.
+- Check that files such as `index.html`, `style.css`, `script.js`, `alice.js`, `bob.js`, `eve.js`, and `pharma.js` are present.
+
+**3. Start the website**
+
+- Open the Extensions panel in Visual Studio Code.
+- Search for **Live Server** and install it if it is not already installed.
+- Open `index.html`.
+- Click **Go Live** at the bottom of Visual Studio Code.
+- The project should open in your default browser.
+
+**4. Test the BB84 Simulator**
+
+- Keep Eve OFF and generate a key.
+- Check the key verification result.
+- Turn Eve ON and generate another key.
+- Observe the Quantum Bit Error Rate (QBER) and the verification result. The key may be rejected if the error rate crosses the configured threshold.
+
+**5. Test Pharmaceutical Data Encryption**
+
+- Enter sample pharmaceutical formulation data in the input field.
+- Click **Encrypt** to encrypt the entered data.
+- Click **Decrypt** to recover the original data.
+- Check that the decrypted output matches the original input.
+
+**6. Check the Results**
+
+The simulator should demonstrate key generation, basis comparison, eavesdropping detection, key verification, and pharmaceutical data encryption and decryption.
+
+
+## Screenshots
+
+### 1. Successful Key Verification
+<img width="1917" height="867" alt="screenshot1" src="https://github.com/user-attachments/assets/af7113ab-a893-40b1-b422-02a97150ca3c" />
+
+### 2. Eavesdropping Detection
+<img width="1917" height="870" alt="screenshot2" src="https://github.com/user-attachments/assets/810e5800-8d03-4512-aacc-82bc84b8b14c" />
+
+### 3. Pharmaceutical Data Encryption and Decryption
+<img width="1881" height="797" alt="screenshot3" src="https://github.com/user-attachments/assets/2c5c8487-f03b-4e82-bc6b-5a39f0af4425" />
+
+
+
