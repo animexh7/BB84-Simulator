@@ -1,72 +1,43 @@
-# BB84 Quantum Key Distribution Simulator
+## Theory-to-Code Mapping
 
-## Secure Data Transmission Prototype
+The BB84 Simulator demonstrates the main stages of Quantum Key Distribution (QKD), from random-bit generation and quantum-state preparation to basis comparison, key verification, and secure data encryption.
 
-A browser-based simulation of the **BB84 Quantum Key Distribution (QKD) protocol)**, presented as a prototype for secure pharmaceutical data transmission.
+| Theoretical Concept | Implementation | Code File | Purpose |
+|---|---|---|---|
+| Random bit generation | `generateRandomBits()` | `alice.js` | Generates a random binary sequence of 0s and 1s. |
+| Random basis selection | `generateRandomBases()` | `alice.js` | Assigns the Z or X basis to each bit. |
+| Quantum-state encoding | `encodePhoton()` | `alice.js` | Represents each prepared photon as a bit and its corresponding basis. |
+| Quantum measurement | `measurePhoton()` | `bob.js` | Returns the original bit when the measurement basis matches; otherwise, produces a random result. |
+| Basis reconciliation and key sifting | `siftKey()` | `alice.js` | Retains bits at positions where Alice's and Bob's bases match. |
+| Eavesdropping simulation | `interceptAndResend()` | `eve.js` | Models an interceptor measuring photons using randomly selected bases and resending replacement photons. |
+| Error-rate estimation | `compareKeys()` | `bob.js` | Compares a sample of sifted bits, counts mismatches, and calculates the Quantum Bit Error Rate (QBER). |
+| Key acceptance decision | Verification logic | `script.js` | Uses sample size, QBER, and remaining-key consistency to determine whether the demonstration key is accepted. |
+| Photon-transmission visualization | Animation functions | `script.js`, `index.html`, `style.css` | Visualizes Alice's bit preparation, basis selection, photon encoding, and transmission towards Bob. |
+| Symmetric data encryption | Web Crypto API with AES-GCM | `pharma.js` | Encrypts formulation data after an accepted BB84 demonstration key is available. |
+| AES key derivation | `deriveAESKey()` | `pharma.js` | Derives a 256-bit AES key by applying SHA-256 to the accepted bit string. |
+| Data decryption | Web Crypto API with AES-GCM | `pharma.js` | Decrypts the ciphertext and verifies successful recovery of the original plaintext through the application flow. |
+| Input validation | Validation checks | `bob.js`, `pharma.js` | Rejects invalid bits, invalid bases, mismatched key lengths, and unsupported inputs. |
 
-The project demonstrates how two communicating parties can establish a shared secret key by using randomly selected quantum bases and discarding measurements where the selected bases do not match.
+### Important Implementation Details
 
-> **Note:** This project is a classical software simulation of the BB84 protocol. It does not use real quantum hardware or actual quantum communication.
+**1. BB84 key generation and sifting**
 
----
+Alice generates random bits and preparation bases. Bob independently chooses measurement bases. The simulator retains only positions where both parties selected the same basis.
 
-## Project Overview
+**2. Eavesdropping and QBER**
 
-The purpose of this project is to demonstrate the basic working principles of the BB84 quantum key distribution protocol through an interactive web-based simulation.
+The optional Eve mode simulates an intercept-and-resend attack. Eve measures each photon in a randomly selected basis and resends a photon based on her measurement. When Eve chooses the wrong basis, this can introduce errors detectable through QBER.
 
-The prototype represents a secure data-transmission environment in which a quantum-generated key can be established and verified before being used for secure communication.
+\[
+\mathrm{QBER}=\frac{\text{Number of mismatched sampled bits}}{\text{Total sampled bits}}\times100\%
+\]
 
-The system performs the following stages:
+The current demonstration uses an 11% QBER threshold and requires at least 10 sampled bits. These are simulation parameters, not a complete security proof.
 
-1. Generate a random binary sequence.
-2. Randomly select a basis for each bit.
-3. Encode the bits into simulated quantum states.
-4. Generate a second random basis sequence for measurement.
-5. Measure the transmitted states.
-6. Compare the selected bases.
-7. Discard positions where the bases do not match.
-8. Generate the sifted key.
-9. Compare the resulting keys.
-10. Display the key agreement and verification status.
+**3. Pharmaceutical data protection**
 
----
+After the application accepts a demonstration key, `pharma.js` derives an AES key using SHA-256 and encrypts the entered formulation data using AES-GCM with a randomly generated 12-byte IV. Decryption uses the corresponding key and IV to recover the original text.
 
-## What is BB84?
+**4. Security scope**
 
-BB84 is a Quantum Key Distribution protocol proposed by **Charles Bennett and Gilles Brassard in 1984**.
-
-The protocol uses two possible bases for representing and measuring quantum states:
-
-- **Z basis**
-- **X basis**
-
-For each transmitted bit, the sender randomly chooses a basis and encodes the bit.
-
-The receiver independently chooses a random basis to measure the received state.
-
-After transmission, both sides publicly compare their basis choices.
-
-They keep only the positions where the same basis was used.
-
-These remaining bits form the **sifted key**.
-
----
-
-## BB84 Simulation Flow
-
-```text
-Random Bit Generation
-        ↓
-Random Basis Selection
-        ↓
-Quantum State Encoding
-        ↓
-Quantum State Measurement
-        ↓
-Basis Reconciliation
-        ↓
-Key Sifting
-        ↓
-Key Comparison
-        ↓
-Key Verification
+This is an educational, software-based BB84 simulation. It does not use real quantum hardware and does not implement every requirement of a production QKD system, such as a complete security proof, privacy amplification, authenticated classical communication, and a production-grade key-management protocol. A low QBER and matching remaining keys in this demonstration should not be interpreted as proof of real-world security.
